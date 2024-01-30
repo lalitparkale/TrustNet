@@ -1,0 +1,11 @@
+Model 1: keyword search optimisation (SVM or Navie Bayes)
+Model 2: Mapping DB entry to contact list - key
+Model 3: Link search query to key
+Model 4: Recommendation model ( weightage function?)
+
+
+Model 5: Updating DB periodically 
+Model 6: Log of searched cases and used instances
+
+Database: Use a relational database like PostgreSQL or MySQL to store user information, friends link, service (tradie) link/key
+Interact with DB: Use an Object-Relational Mapping (ORM) library like SQLAlchemy?
