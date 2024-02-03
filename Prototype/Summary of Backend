@@ -9,3 +9,8 @@ Model 6: Log of searched cases and used instances
 
 Database: Use a relational database like PostgreSQL or MySQL to store user information, friends link, service (tradie) link/key
 Interact with DB: Use an Object-Relational Mapping (ORM) library like SQLAlchemy?
+
+How to use Unstructed Data for User Interaction Query Interpretation:
+https://js.langchain.com/docs/use_cases/question_answering/
+
+
