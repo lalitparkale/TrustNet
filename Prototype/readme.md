@@ -52,3 +52,23 @@ Aspiration is to utilise Edge AI technology as much as possible so that data sta
 1. UX enchancer - features to provide exceptional user experience, like auto-fill prediction for search query
 2. User Privacy protector - to fill the gaps where Edge AI can't assist, 
 ![PXL_20240130_085040674](https://github.com/lalitparkale/TrustNet/assets/20618830/8b27e2f7-09f8-4b1f-8203-561642be661c)
+
+
+# Prototype end to end flow
+
+- Mobile App will invoke the SeekRecommendation API.
+- SeekRecommendation API is the deployed ML model. <? not sure how to tie it up with the contacts data of the user>
+
+## deployment flow
+1. Create training data and host it <?maybe github dump or azure storage or web file>
+2. Create Azure ML workspace
+   - For each aspect create an experiment
+   - Create a job
+   - provide the training data source
+   - experiement with the model
+   - pick the best model
+   - deploy the model for testing
+3. Deploy the model as Endpoint in Azure Container Intance
+
+![PXL_20240202_235418010](https://github.com/lalitparkale/TrustNet/assets/20618830/9a74557e-7be5-4395-8848-68b3d960939e)
+
