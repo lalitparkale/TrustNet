@@ -13,6 +13,8 @@ To rapidly build, release and iterate at scale, AI will be used as the faithful 
 ***AI for trustworthy logic execution***
 - Post Install - Read contacts, obfuscate, create hash pairs [unique user#, contact#] and send to AI warehouse
 - On contacts received - identify service provider numbers from received contacts
+  1. identify from the contact name
+  2. identify by comparing phone number to SP registry
 - Mine service providers - Go out to the wide internet to mine service provider contacts
 - Recommendation (on search) - analyse search text, analyse contacts, apply intelligence and provide top (few) recommended contacts  
 
