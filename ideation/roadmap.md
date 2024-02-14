@@ -1,4 +1,6 @@
 Roadmap
+
+# Items
 1. founding
    - draft agreement
    - agree on the team - who does what?
@@ -23,5 +25,31 @@ Roadmap
      - local with the team
    - MVP
      - publish on app store
-4. 
-5. 
+4.  
+
+# 22Apr
+	- Goal - Publish the mobile app to Google Store (nice to have apple store)
+	- Success criteria - 20 installations
+
+## Features:
+	- Visual identity (Greg + Swati)
+		○ Finalise Mobile app UX - https://www.figma.com/file/Em0vukICWDfdNGgBSxED0h/TT-Mobile-Prototype?type=design&node-id=0-1&mode=design
+			§ User journeys
+		○ Website
+			§ name
+			§ Logo
+			§ Solution Video 
+			§ Privacy intent explanation
+			§ Tutorial
+			§ Team video
+	- Mobile App search feature (Lalit + Rajesh)
+		○ Identify target categories
+		○ Search box - type in the text for the expected work
+			§ Error messages
+		○ Engine - Display a 3 recommendations
+			§ Call?
+			§ Message?
+		○ User activity profiling and instrumentation
+		○ Feedback feature
+	- Validation
+
