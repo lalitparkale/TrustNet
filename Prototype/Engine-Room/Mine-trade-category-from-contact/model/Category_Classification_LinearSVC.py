@@ -18,7 +18,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn import metrics
 
 # lOAD the dataset from the subfolder /data
-datapath = "data/Keyword_Search_Database.csv"
+datapath = "data/Keyword_Search_Database1.csv"
 df = pd.read_csv(datapath)
 # Mapping each category to a number
 df['category_id']=np.unique(df['category'], return_inverse=True)[1]
