@@ -20,7 +20,7 @@ In case of the exit of a co-founder, the rights should be equally divided betwee
 ## Founders and Co-founders: 
 1. Founder: Lalit Parkale
 2. Co-founder: Rajesh Joseph
-3. Co-founder: Gregory Corsibier
+3. Co-founder: Gregory Corbisier
 4. Co-founder: Swati Puranik-Risbud (? :-))
 
 # Agreement points:
