@@ -1,5 +1,8 @@
+library screen_lib;
+
 import 'package:flutter/material.dart';
 import 'package:mobile_app/pages/home.dart';
+import 'package:mobile_app/pages/profile.dart';
 
 BottomNavigationBar navBar(BuildContext context) {
   return BottomNavigationBar(
@@ -18,29 +21,29 @@ BottomNavigationBar navBar(BuildContext context) {
       ),
     ],
     onTap: (value) => {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const HomePage(title: 'TrustNet')),
-      ),
-      //add switch case to navigate to different pages
-
-      // switch (value) {
-
-      //   case 0:
-      //     //navigate to profile page
-      //     break;
-      //   case 1:
-      //     //navigate to home page
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => HomePage(title: 'TrustNet')),
-      //     ),
-      //     break;
-      //   case 2:
-      //     //navigate to network page
-      //     break;
-      // }
+      if (value == 0)
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfilePage()),
+          ),
+        }
+      else if (value == 1)
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const HomePage(title: 'TrustNet')),
+          ),
+        }
+      else if (value == 2)
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const HomePage(title: 'Network')),
+          )
+        }
     },
   );
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/pages/home.dart';
+import 'package:mobile_app/pages/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,6 +7,11 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  //create initialisation function
+  void getInitInfo() {
+    //initialise the app
+  }
 
   // This widget is the root of your application.
   @override
@@ -18,7 +23,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'TrustNet - word of friends!'),
+      //home: const HomePage(title: 'TrustNet - word of friends!'),
+      home: const LoginPage(title: 'TrustNet - word of friends!'),
     );
   }
 }

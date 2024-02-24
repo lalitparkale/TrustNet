@@ -30,7 +30,7 @@ class RecommendationPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Recommendations for : $SearchModel.getSearchText()',
+                'Recommendations for : ${SearchModel.getSearchText()}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
