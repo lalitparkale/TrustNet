@@ -17,10 +17,15 @@ class ProfilePage extends StatelessWidget {
       body: const Column(
         children: [
           BasicProfileCard(),
-          //spacing
-          SizedBox(height: 20),
-
+          Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
           SharedContactsTile(),
+          Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
         ],
       ),
       bottomNavigationBar: navBar(context),
@@ -35,60 +40,69 @@ class SharedContactsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        //color: Colors.indigoAccent.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
             'Contacts',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: DataTable(
-            sortColumnIndex: 0,
-            sortAscending: true,
-            showCheckboxColumn: true,
-            headingRowColor: MaterialStateProperty.all(Colors.blue[100]),
-            columns: const [
-              DataColumn(label: Text('Name')),
-              DataColumn(label: Text('Mobile')),
-            ],
-            rows: [
-              for (var contact in globals.globalSharedContacts)
-                DataRow(
-                  cells: [
-                    DataCell(Text(contact.fullName)),
-                    DataCell(Text(contact.mobile)),
-                  ],
-                  onSelectChanged: (newValue) {
-                    //do something
-                    if (newValue == true) {}
-                  },
-                ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 2),
-        Align(
-          alignment: Alignment.center,
-          child: IconButton(
-            onPressed: () {
-              addContactDialogBuilder(context);
-            },
-            icon: const Icon(
-              Icons.add_circle,
-              color: Colors.blue,
+          Padding(
+            padding: const EdgeInsets.all(2),
+            child: DataTable(
+              sortColumnIndex: 0,
+              sortAscending: true,
+              showCheckboxColumn: true,
+              headingTextStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                //color: Colors.white,
+              ),
+              columns: const [
+                DataColumn(label: Text('Name')),
+                DataColumn(label: Text('Mobile')),
+              ],
+              rows: [
+                for (var contact in globals.globalSharedContacts)
+                  DataRow(
+                    cells: [
+                      DataCell(Text(contact.fullName)),
+                      DataCell(Text(contact.mobile)),
+                    ],
+                    onSelectChanged: (newValue) {
+                      //do something
+                      if (newValue == true) {}
+                    },
+                  ),
+              ],
             ),
-            iconSize: 36,
           ),
-        ),
-      ],
+          const SizedBox(height: 2),
+          Align(
+            alignment: Alignment.center,
+            child: IconButton(
+              onPressed: () {
+                addContactDialogBuilder(context);
+              },
+              icon: const Icon(
+                Icons.add_circle,
+                color: Colors.blue,
+              ),
+              iconSize: 36,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -217,65 +231,71 @@ class BasicProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(10),
-          child: Text(
-            'Profile',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.indigoAccent.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'Profile',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        //display user profile
-        Row(
-          children: [
-            const Icon(
-              Icons.person,
-              size: 100,
-              color: Colors.indigo,
-              shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Name: ${globals.globalUserProfile.name}',
-                    style: const TextStyle(fontSize: 16)),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text('Email: ${globals.globalUserProfile.email}',
-                    style: const TextStyle(fontSize: 16)),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text('Postcode: ${globals.globalUserProfile.postcode}',
-                    style: const TextStyle(fontSize: 16)),
-                const SizedBox(height: 10),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const LoginPage(title: 'TrustNet')),
-                      );
-                    },
-                    child: const Text('Log out')),
-              ],
-            ),
-          ],
-        ),
-      ],
+
+          //display user profile
+          Row(
+            children: [
+              const Icon(
+                Icons.person,
+                size: 100,
+                color: Colors.indigo,
+                shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Name: ${globals.globalUserProfile.name}',
+                      style: const TextStyle(fontSize: 16)),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text('Email: ${globals.globalUserProfile.email}',
+                      style: const TextStyle(fontSize: 16)),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text('Postcode: ${globals.globalUserProfile.postcode}',
+                      style: const TextStyle(fontSize: 16)),
+                  const SizedBox(height: 10),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const LoginPage(title: 'TrustNet')),
+                        );
+                      },
+                      child: const Text('Log out')),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

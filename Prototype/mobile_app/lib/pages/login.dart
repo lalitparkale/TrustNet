@@ -66,11 +66,14 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: const Text('Login'),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 10),
+            const Divider(),
             //add oauth providers
-            const Text('Or login with:'),
+            const Text('Or login with:',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                )),
             //add row widget
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
