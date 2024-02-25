@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/pages/login.dart';
+import 'package:mobile_app/globals.dart';
+import 'package:mobile_app/model/profile_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +13,17 @@ class MyApp extends StatelessWidget {
   //create initialisation function
   void getInitInfo() {
     //initialise the app
+
+    globalUserProfile.name = 'Test Name';
+    globalUserProfile.email = 'name.l@test.com';
+
+    globalSharedContacts = getSharedContacts();
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    getInitInfo();
     return MaterialApp(
       title: 'TrustNet',
       theme: ThemeData(
