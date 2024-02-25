@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/pages/login.dart';
 import 'package:mobile_app/pages/screen_lib.dart';
 import 'package:mobile_app/globals.dart' as globals;
 import 'package:mobile_app/model/profile_model.dart';
@@ -242,7 +243,7 @@ class BasicProfileCard extends StatelessWidget {
               shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
             ),
             const SizedBox(
-              width: 20,
+              width: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,6 +260,17 @@ class BasicProfileCard extends StatelessWidget {
                 ),
                 Text('Postcode: ${globals.globalUserProfile.postcode}',
                     style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 10),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const LoginPage(title: 'TrustNet')),
+                      );
+                    },
+                    child: const Text('Log out')),
               ],
             ),
           ],
