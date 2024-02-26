@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_app/pages/home.dart';
 
@@ -75,15 +77,17 @@ class _LoginPageState extends State<LoginPage> {
                   fontWeight: FontWeight.bold,
                 )),
             //add row widget
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 //add icon button widget
                 IconButton(
-                  icon: const Icon(Icons.facebook),
+                  icon: const Icon(Icons.facebook,
+                      color: Colors.blueAccent, size: 50),
                   onPressed: () {
                     //navigate to home page
-                    //Navigator.pushNamed(context, '/home');
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -94,10 +98,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 //add icon button widget
                 IconButton(
-                  icon: const Icon(Icons.facebook),
+                  icon: Image.network(
+                    'https://lh3.googleusercontent.com/d_S5gxu_S1P6NR1gXeMthZeBzkrQMHdI5uvXrpn3nfJuXpCjlqhLQKH_hbOxTHxFhp5WugVOEcl4WDrv9rmKBDOMExhKU5KmmLFQVg',
+                    //width: 100,
+                    height: 50,
+                  ),
                   onPressed: () {
                     //navigate to home page
-                    Navigator.pushNamed(context, '/home');
+                    //Navigator.pushNamed(context, '/home');
                   },
                 ),
               ],

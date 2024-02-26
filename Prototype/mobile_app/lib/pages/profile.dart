@@ -14,19 +14,21 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: const Column(
-        children: [
-          BasicProfileCard(),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
-          SharedContactsTile(),
-          Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
-        ],
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            BasicProfileCard(),
+            Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
+            SharedContactsTile(),
+            Divider(
+              color: Colors.grey,
+              thickness: 1,
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: navBar(context),
     );
