@@ -23,44 +23,44 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text('Home',
+              const Text('What are friends for?',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    //fontWeight: FontWeight.bold,
                   )),
               //add expanded widget
-              Expanded(
-                //create grid view with 2 columns and 2 rows
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  children: const <Widget>[
-                    //add container widget
-                    HomeTile(
-                      icon: Icons.people,
-                      title: 'Trusted Contacts',
-                      value: '101',
-                    ),
+              // Expanded(
+              //   //create grid view with 2 columns and 2 rows
+              //   child: GridView.count(
+              //     crossAxisCount: 2,
+              //     children: const <Widget>[
+              //       //add container widget
+              //       HomeTile(
+              //         icon: Icons.people,
+              //         title: 'Trusted Contacts',
+              //         value: '101',
+              //       ),
 
-                    HomeTile(
-                      icon: Icons.star,
-                      title: 'Trusted Providers',
-                      value: '101',
-                    ),
+              //       HomeTile(
+              //         icon: Icons.star,
+              //         title: 'Trusted Providers',
+              //         value: '101',
+              //       ),
 
-                    HomeTile(
-                      icon: Icons.circle_outlined,
-                      title: 'Friends of Friends',
-                      value: '10,000+',
-                    ),
+              //       HomeTile(
+              //         icon: Icons.circle_outlined,
+              //         title: 'Friends of Friends',
+              //         value: '10,000+',
+              //       ),
 
-                    HomeTile(
-                      icon: Icons.book,
-                      title: 'Categories',
-                      value: '11',
-                    ),
-                  ],
-                ),
-              ),
+              //       HomeTile(
+              //         icon: Icons.book,
+              //         title: 'Categories',
+              //         value: '11',
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 margin: const EdgeInsets.only(
                     top: 20, left: 20, right: 20, bottom: 20),
@@ -119,7 +119,7 @@ class HomeTile extends StatelessWidget {
       margin: const EdgeInsets.all(15),
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.indigoAccent.withOpacity(0.8),
+        color: Colors.indigoAccent.withOpacity(0.6),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -127,21 +127,22 @@ class HomeTile extends StatelessWidget {
         children: <Widget>[
           Icon(
             icon,
-            size: 50,
+            size: 36,
             color: Colors.white,
           ),
           Text(
             title,
             style: const TextStyle(
               color: Colors.indigo,
-              fontSize: 16,
+              fontSize: 12,
             ),
           ),
           Text(
             value,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],

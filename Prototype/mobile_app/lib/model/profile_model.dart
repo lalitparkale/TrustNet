@@ -11,12 +11,28 @@ class UserProfile {
 
 class UserContact {
   String fName;
-  late String lName;
+  late String? lName;
   String fullName;
   String mobile;
+  late BusinessContact? businessContact;
 
   UserContact(
-      {required this.fName, required this.fullName, required this.mobile});
+      {required this.fName,
+      required this.fullName,
+      required this.mobile,
+      this.lName,
+      this.businessContact});
+}
+
+class BusinessContact {
+  late String headOfficeAddress;
+  late String businessName;
+  late String? businessABN;
+
+  BusinessContact(
+      {required this.headOfficeAddress,
+      required this.businessName,
+      this.businessABN});
 }
 
 List<UserContact> getSharedContacts() {
@@ -31,7 +47,12 @@ List<UserContact> getSharedContacts() {
   contacts.add(UserContact(
       fName: 'Sue', fullName: 'Sue Carpenter', mobile: '07777777780'));
   contacts.add(UserContact(
-      fName: 'Tom', fullName: 'Tom Builder', mobile: '07777777781'));
+      fName: 'Tom',
+      fullName: 'Tom Builder',
+      mobile: '07777777781',
+      businessContact: BusinessContact(
+          businessName: 'Towering Aspirations Pty Ltd.',
+          headOfficeAddress: '123 Main St, Syndey, 2000')));
 
   return contacts;
 }
@@ -44,8 +65,14 @@ class LabelledContact extends UserContact {
       required String fName,
       required String lName,
       required String fullName,
-      required String mobile})
-      : super(fName: fName, fullName: fullName, mobile: mobile);
+      required String mobile,
+      BusinessContact? businessContact})
+      : super(
+            fName: fName,
+            fullName: fullName,
+            mobile: mobile,
+            lName: lName,
+            businessContact: businessContact);
 }
 
 List<LabelledContact> getLabelledContacts() {
