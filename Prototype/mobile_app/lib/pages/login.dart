@@ -78,13 +78,16 @@ class _LoginPageState extends State<LoginPage> {
                 )),
             //add row widget
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 //add icon button widget
                 IconButton(
-                  icon: const Icon(Icons.facebook,
-                      color: Colors.blueAccent, size: 50),
+                  icon: const Image(
+                    image: AssetImage('assets/images/logoMicrosoft.png'),
+                    width: 72,
+                    //height: 24,
+                  ),
                   onPressed: () {
                     //navigate to home page
 
@@ -98,10 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 //add icon button widget
                 IconButton(
-                  icon: Image.network(
-                    'https://lh3.googleusercontent.com/d_S5gxu_S1P6NR1gXeMthZeBzkrQMHdI5uvXrpn3nfJuXpCjlqhLQKH_hbOxTHxFhp5WugVOEcl4WDrv9rmKBDOMExhKU5KmmLFQVg',
-                    //width: 100,
-                    height: 50,
+                  icon: const Image(
+                    image: AssetImage('assets/images/logoG.png'),
+                    width: 72,
+                    //height: 24,
                   ),
                   onPressed: () {
                     //navigate to home page
