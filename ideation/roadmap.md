@@ -56,3 +56,4 @@ Roadmap
 |Feature|Description|Draft MuSCoW|Finalised MuSCow|
 |-------|-----------|------|------|
 |Multi level identification|In recommendations page, for the recommender show the level of friendshio|Should|Must|
+|Search History|Display search history|could | could|
