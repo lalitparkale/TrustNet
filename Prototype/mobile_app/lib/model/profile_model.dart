@@ -6,6 +6,8 @@ class UserProfile {
 
   int isVerified = 0;
 
+  Future<bool> isLocationPermissionGranted = Future.value(false);
+
   UserProfile({required this.isVerified});
 }
 
@@ -62,17 +64,11 @@ class LabelledContact extends UserContact {
 
   LabelledContact(
       {required this.tradeCategory,
-      required String fName,
-      required String lName,
-      required String fullName,
-      required String mobile,
-      BusinessContact? businessContact})
-      : super(
-            fName: fName,
-            fullName: fullName,
-            mobile: mobile,
-            lName: lName,
-            businessContact: businessContact);
+      required super.fName,
+      required String super.lName,
+      required super.fullName,
+      required super.mobile,
+      super.businessContact});
 }
 
 List<LabelledContact> getLabelledContacts() {

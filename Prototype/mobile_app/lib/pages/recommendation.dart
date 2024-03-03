@@ -1,13 +1,17 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_app/model/profile_model.dart';
 import 'package:mobile_app/model/recom_model.dart';
 import 'package:mobile_app/model/search_model.dart';
 import 'package:mobile_app/pages/screen_lib.dart';
+
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
 //create a stateless page to display the recommendations based on the search text
 class RecommendationPage extends StatelessWidget {
-  const RecommendationPage({Key? key}) : super(key: key);
+  const RecommendationPage({super.key});
 
   void _getInitInfo() {
     //get the search text from the search model
@@ -59,111 +63,76 @@ class RecommendationPage extends StatelessWidget {
                       color: Colors.indigoAccent.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    // child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //         children: [
-                    //           const Text('By : '),
-                    //           Text(
-                    //             //'Almighty Universe',
-                    //             RecommendationModel.getRecommendations()[index]
-                    //                 .recommender
-                    //                 .fullName,
-                    //             style: const TextStyle(
-                    //                 fontSize: 16,
-                    //                 fontWeight: FontWeight.bold,
-                    //                 color: Colors.black),
-                    //           ),
-                    //           IconButton(
-                    //             icon: const Icon(Icons.call_rounded),
-                    //             color: Colors.green,
-                    //             onPressed: () => {
-                    //               //invoke mobile call function
-                    //               // launchUrl(
-                    //               //   Uri(
-                    //               //     scheme: 'tel',
-                    //               //     path: RecommendationModel
-                    //               //             .getRecommendations()[index]
-                    //               //         .recommender
-                    //               //         .mobile,
-                    //               //   ), //invoke mobile call function
-                    //               // ),
-                    //             },
-                    //           ),
-                    //           IconButton(
-                    //             icon: const Icon(Icons.message_rounded),
-                    //             color: Colors.indigo,
-                    //             onPressed: () => {
-                    //               //invoke mobile call function
-                    //             },
-                    //           ),
-                    //         ],
-                    //       ),
-                    //       Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //         children: [
-                    //           const Text('Plumber : '),
-                    //           //Text('Andy Plumber',
-                    //           Text(
-                    //               RecommendationModel.getRecommendations()[
-                    //                       index]
-                    //                   .referee
-                    //                   .fullName,
-                    //               style: const TextStyle(
-                    //                   fontSize: 16,
-                    //                   fontWeight: FontWeight.bold,
-                    //                   color: Colors.indigo)),
-                    //           IconButton(
-                    //             icon: const Icon(Icons.call_rounded),
-                    //             color: Colors.green,
-                    //             onPressed: () => {
-                    //               //invoke mobile call function
-                    //             },
-                    //           ),
-                    //           IconButton(
-                    //             icon: const Icon(Icons.message_rounded),
-                    //             color: Colors.indigo,
-                    //             onPressed: () => {
-                    //               //invoke mobile call function
-                    //             },
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ]),
-
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('Recommender:'),
-                            Text('Referred :'),
-                          ],
+                        const Flexible(
+                          child: Card(
+                            elevation: 0,
+                            color: Colors.transparent,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              //crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(''),
+                                Text('Referred :',
+                                    style: TextStyle(fontSize: 10)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Card(
+                            elevation: 0,
+                            color: Colors.transparent,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  //'Almighty Universe',
+                                  RecommendationModel.getRecommendations()[
+                                          index]
+                                      .recommender
+                                      .fullName,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                Text(
+                                    RecommendationModel.getRecommendations()[
+                                            index]
+                                        .referee
+                                        .fullName,
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.indigo)),
+                              ],
+                            ),
+                          ),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(
-                              //'Almighty Universe',
-                              RecommendationModel.getRecommendations()[index]
-                                  .recommender
-                                  .fullName,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                            Tooltip(
+                              message: 'Second level connection',
+                              child: IconButton(
+                                  icon: const Icon(Icons.looks_two_outlined),
+                                  color: Colors.blueAccent,
+                                  onPressed: () => {
+                                        //invoke mobile call function
+                                      }),
                             ),
-                            Text(
-                                RecommendationModel.getRecommendations()[index]
-                                    .referee
-                                    .fullName,
-                                style: const TextStyle(
-                                    fontSize: 16,
-                                    //fontWeight: FontWeight.bold,
-                                    color: Colors.indigo)),
+                            IconButton(
+                              icon: const Icon(Icons.stars),
+                              color: Colors.blueAccent,
+                              onPressed: () => {
+                                //invoke mobile call function
+                              },
+                            ),
                           ],
                         ),
                         Column(
@@ -223,7 +192,10 @@ class RecommendationPage extends StatelessWidget {
                                         AlertDialog(
                                       title: const Text('Business Contact'),
                                       content: Container(
+                                        //width: 150,
                                         height: 200,
+                                        // color: Colors.indigoAccent
+                                        //     .withOpacity(0.3),
                                         child: BusinessCard(
                                           bizContact: RecommendationModel
                                                   .getRecommendations()[index]
@@ -232,10 +204,21 @@ class RecommendationPage extends StatelessWidget {
                                       ),
                                       actions: <Widget>[
                                         TextButton(
+                                          //style:
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.indigoAccent),
+                                            foregroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.white),
+                                          ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: const Text('Close'),
+                                          child: const Text(
+                                            'Close',
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -267,64 +250,88 @@ class BusinessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //height: 100,
-      margin: const EdgeInsets.all(10),
-      child: Row(
-        children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            const Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Business Name : ',
-                  style: TextStyle(
-                      fontSize: 12,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.indigo),
-                ),
-                Text(
-                  'Address : ',
-                  style: TextStyle(
-                      fontSize: 12,
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.indigo),
-                ),
-              ],
-            ),
-            Column(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //crossAxis0Alignment: CrossAxisAlignment.stretch,
+            children: [
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bizContact.businessContact!.businessName,
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.indigo),
-                  ),
-                  Text(
-                    bizContact.businessContact!.headOfficeAddress,
-                    style: const TextStyle(
-                        fontSize: 16,
+                    'Name :',
+                    style: TextStyle(
+                        fontSize: 10,
                         //fontWeight: FontWeight.bold,
                         color: Colors.indigo),
+                    softWrap: true,
                   ),
-                ]),
-            // const Column(
-            //   children: [
-            //     GoogleMap(
-            //         mapType: MapType.normal,
-            //         initialCameraPosition: CameraPosition(
-            //           target: LatLng(-33.852, 151.211),
-            //           zoom: 14.0,
-            //         )),
-            //   ],
-            // ),
-          ]),
-        ],
-      ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Address :',
+                    style: TextStyle(
+                        fontSize: 10,
+                        //fontWeight: FontWeight.bold,
+                        color: Colors.indigo),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bizContact.businessContact!.businessName,
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo),
+                      //softWrap: true,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      bizContact.businessContact!.headOfficeAddress,
+                      style: const TextStyle(
+                          fontSize: 12,
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.indigo),
+                      //softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ]),
+            ]),
+        Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  'google map will render business location here!',
+                  style: TextStyle(
+                      fontSize: 10,
+                      //fontWeight: FontWeight.bold,
+                      color: Colors.indigo),
+                  softWrap: true,
+                ),
+                // GoogleMap(
+                //     mapType: MapType.normal,
+                //     initialCameraPosition: CameraPosition(
+                //       target: LatLng(-33.852, 151.211),
+                //       zoom: 13.0,
+                //     )),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

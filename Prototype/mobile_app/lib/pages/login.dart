@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/pages/home.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
+  const LoginPage({super.key, required this.title});
 
   final String title;
 

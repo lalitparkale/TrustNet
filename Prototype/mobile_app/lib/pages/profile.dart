@@ -6,7 +6,7 @@ import 'package:mobile_app/model/profile_model.dart';
 
 //create profile screen
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {

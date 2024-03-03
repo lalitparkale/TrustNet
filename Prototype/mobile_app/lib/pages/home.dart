@@ -4,7 +4,7 @@ import 'package:mobile_app/pages/screen_lib.dart';
 import 'package:mobile_app/pages/recommendation.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+  const HomePage({super.key, required this.title});
 
   final String title;
 
