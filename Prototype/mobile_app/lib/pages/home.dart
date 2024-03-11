@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/model/search_model.dart';
 import 'package:mobile_app/pages/screen_lib.dart';
 import 'package:mobile_app/pages/recommendation.dart';
+import 'package:mobile_app/globals.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -16,13 +17,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        // title: Text(widget.title),
-        // ),
+        appBar: AppBar(
+          title: Text('Welcome ${globalUserProfile.name}!'),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.all(40),
+                child: Image(
+                  image: AssetImage('assets/logo.png'),
+                  width: 64,
+                ),
+              ),
               const Text('What are friends for?',
                   style: TextStyle(
                     fontSize: 16,
