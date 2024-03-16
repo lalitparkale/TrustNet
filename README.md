@@ -1,4 +1,13 @@
 # TrustNet
+
+
+> You know how time consuming and stressful it can be for people to find a good tradie.
+> 
+> Well, what we do is provide simple but powerful search app that picks suitable and trusted tradie by tapping into your friends network.
+>
+> In fact, 90% of business in Australia is word of mouth. And, tradies have 80% higher conversion rate in comparison to 20% through online marketing
+
+
 Development of TrustNet app to utilise the powerful network of friends and friends to get things done when you need it.
 
 Our approach is to design, build and operate apps and systems with automation as default principle. Human intervention will be in extreme exception scenarios. AI will assist us in every aspect of our work, like design, coding, backend, sales, operations, funding.
