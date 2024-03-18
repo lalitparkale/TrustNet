@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this product
-title: "[Feature]"
+title: "[Idea]"
 labels: idea
 assignees: ''
 
