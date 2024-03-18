@@ -1,19 +1,20 @@
 ---
 name: Feature request
-about: Suggest an idea for this product
-title: "[Idea]"
-labels: idea
+about: Suggest an idea for this project
+title: ''
+labels: ''
 assignees: ''
 
 ---
 
-**Please describe your feature idea**
-- A clear and concise description of what the idea is. Ex. I'm always frustrated when [...], so idea is to [...]
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-**Have you validated this idea with few others?**
-- A summary of any market research or commentaries from the personas
-
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
 
 **Additional context**
-- Add any other context or screenshots about the feature request here.
+Add any other context or screenshots about the feature request here.
