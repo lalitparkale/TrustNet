@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/pages/home.dart';
-import 'package:mobile_app/pages/login.dart';
-import 'package:mobile_app/globals.dart';
-import 'package:mobile_app/model/profile_model.dart';
+import '../pages/home.dart';
+//import '../pages/login.dart';
+import '../globals.dart';
+import '../model/profile_model.dart';
 
 import 'package:location/location.dart';
 //import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';

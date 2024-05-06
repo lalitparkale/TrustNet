@@ -1,4 +1,4 @@
-# mobile_app
+# Pickeze
 
 A new Flutter project.
 

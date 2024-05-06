@@ -1,4 +1,4 @@
-package com.trustnet.mobile_app
+package com.pickeze
 
 import io.flutter.embedding.android.FlutterActivity
 

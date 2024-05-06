@@ -1,4 +1,6 @@
-import 'package:mobile_app/model/profile_model.dart';
+//import 'package:mobile_app/model/profile_model.dart';
+//import package profile_model.dart
+import '../model/profile_model.dart';
 
 // class TrustedContactModel {
 //   String fName;

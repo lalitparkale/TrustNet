@@ -2,7 +2,7 @@
 
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/pages/home.dart';
+//import '../pages/home.dart';
 
 onRedirect(BuildContext context) {
   Navigator.of(context)
@@ -27,7 +27,8 @@ class _LoginPageState extends State<LoginPage> {
     const aadB2CClientID = "70d3f1a7-4794-47ce-9004-b914cd635dac";
     const aadB2CRedirectURL =
         //"https://TrustNetB2COrg.b2clogin.com/oauth2/nativeclient";
-        "https://com.trustnet.mobile_app/myappname";
+        //"https://com.trustnet.pickeze/myappname";
+        "https://com.pickeze/myappname";
     const aadB2CUserFlowName = "B2C_1_Trustnetsignin";
     const aadB2CScopes = ['openid', 'offline_access'];
     const aadB2TenantName = "TrustNetB2COrg";

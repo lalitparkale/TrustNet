@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/model/search_model.dart';
-import 'package:mobile_app/pages/screen_lib.dart';
-import 'package:mobile_app/pages/recommendation.dart';
-import 'package:mobile_app/globals.dart';
+import '../model/search_model.dart';
+import 'screen_lib.dart';
+import 'recommendation.dart';
+import '../globals.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});

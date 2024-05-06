@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/pages/login.dart';
-import 'package:mobile_app/pages/screen_lib.dart';
-import 'package:mobile_app/globals.dart' as globals;
-import 'package:mobile_app/model/profile_model.dart';
+import '../pages/login.dart';
+import '../pages/screen_lib.dart';
+import '../globals.dart' as globals;
+import '../model/profile_model.dart';
 
 //create profile screen
 class ProfilePage extends StatelessWidget {

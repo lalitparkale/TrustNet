@@ -1,6 +1,6 @@
 {
-    "name": "mobile_app",
-    "short_name": "mobile_app",
+    "name": "Pickeze",
+    "short_name": "Pickeze",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

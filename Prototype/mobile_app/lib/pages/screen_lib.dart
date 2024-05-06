@@ -1,8 +1,8 @@
 library screen_lib;
 
 import 'package:flutter/material.dart';
-import 'package:mobile_app/pages/home.dart';
-import 'package:mobile_app/pages/profile.dart';
+import '../pages/home.dart';
+import '../pages/profile.dart';
 
 BottomNavigationBar navBar(BuildContext context) {
   return BottomNavigationBar(

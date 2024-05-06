@@ -1,10 +1,10 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:mobile_app/model/profile_model.dart';
-import 'package:mobile_app/model/recom_model.dart';
-import 'package:mobile_app/model/search_model.dart';
-import 'package:mobile_app/pages/screen_lib.dart';
+import '../model/profile_model.dart';
+import '../model/recom_model.dart';
+import '../model/search_model.dart';
+import '../pages/screen_lib.dart';
 
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
