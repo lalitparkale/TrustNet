@@ -11,12 +11,15 @@ import '../pages/screen_lib.dart';
 
 //create a stateless page to display the recommendations based on the search text
 class RecommendationPage extends StatelessWidget {
-  const RecommendationPage({super.key});
+  RecommendationPage({super.key});
 
   void _getInitInfo() {
     //get the search text from the search model
     //SearchModel.getSearchText();
+    readonlyTextController.text = SearchModel.getSearchText();
   }
+
+  final readonlyTextController = TextEditingController(text: 'temp');
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +34,26 @@ class RecommendationPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
+              const Padding(
+                padding: EdgeInsets.all(20),
                 child: Text(
-                  'Recommendations for : ${SearchModel.getSearchText()}',
-                  style: const TextStyle(
-                    fontSize: 16,
+                  'Searched for : ',
+                  style: TextStyle(
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(7),
+                child: TextField(
+                  readOnly: true,
+                  controller: readonlyTextController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      filled: true),
                 ),
               ),
               const SizedBox(

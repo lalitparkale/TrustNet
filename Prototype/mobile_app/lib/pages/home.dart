@@ -28,12 +28,12 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(40),
                 child: Image(
                   image: AssetImage('assets/logo.png'),
-                  width: 64,
+                  width: 112,
                 ),
               ),
-              const Text('What are friends for?',
+              const Text('Tap into the power of your friends network',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     //fontWeight: FontWeight.bold,
                   )),
               //add expanded widget
@@ -77,7 +77,8 @@ class _HomePageState extends State<HomePage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
-                    labelText: 'Enter your search',
+                    labelText: 'Search',
+                    hintText: 'search for services, like "fix leaking pipe"',
 
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),
@@ -86,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RecommendationPage()),
+                              builder: (context) => RecommendationPage()),
                         );
                       },
                     ),
@@ -98,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const RecommendationPage()),
+                          builder: (context) => RecommendationPage()),
                     );
                   },
                 ),
