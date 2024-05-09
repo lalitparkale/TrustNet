@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   void getInitInfo() {
     //initialise the app
 
-    globalUserProfile.name = 'Test Name';
+    globalUserProfile.name = 'Name';
     globalUserProfile.email = 'name.l@test.com';
 
     globalSharedContacts = getSharedContacts();

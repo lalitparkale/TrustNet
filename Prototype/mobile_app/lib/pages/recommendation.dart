@@ -10,10 +10,17 @@ import '../pages/screen_lib.dart';
 //import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
 //create a stateless page to display the recommendations based on the search text
-class RecommendationPage extends StatelessWidget {
-  RecommendationPage({super.key});
+class RecommendationPage extends StatefulWidget {
+  const RecommendationPage({super.key});
 
-  void _getInitInfo() {
+  @override
+  State<RecommendationPage> createState() => _RecommendationPageState();
+}
+
+class _RecommendationPageState extends State<RecommendationPage> {
+  @override
+  void initState() {
+    super.initState();
     //get the search text from the search model
     //SearchModel.getSearchText();
     readonlyTextController.text = SearchModel.getSearchText();
@@ -24,231 +31,52 @@ class RecommendationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //get recommendations based on the search text
-    _getInitInfo();
+
+    //_getInitInfo(); //invocation not required after changing this to initState
 
     return Scaffold(
         appBar: AppBar(
           title: const Text('Recommendations'),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'Searched for : ',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+        body: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                'Searched for : ',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: TextField(
+                readOnly: true,
+                controller: readonlyTextController,
+                style: const TextStyle(
+                  fontSize: 12,
+                  //fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
+                  fillColor: Colors.grey.withOpacity(0.1),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  filled: true,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(7),
-                child: TextField(
-                  readOnly: true,
-                  controller: readonlyTextController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      filled: true),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: RecommendationModel.getRecommendations().length,
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 12,
-                ),
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                ),
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.indigoAccent.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Flexible(
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.transparent,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              //crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(''),
-                                Text('Referred :',
-                                    style: TextStyle(fontSize: 10)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.transparent,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  //'Almighty Universe',
-                                  RecommendationModel.getRecommendations()[
-                                          index]
-                                      .recommender
-                                      .fullName,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ),
-                                Text(
-                                    RecommendationModel.getRecommendations()[
-                                            index]
-                                        .referee
-                                        .fullName,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.indigo)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Tooltip(
-                              message: 'Second level connection',
-                              child: IconButton(
-                                  icon: const Icon(Icons.looks_two_outlined),
-                                  color: Colors.blueAccent,
-                                  onPressed: () => {
-                                        //invoke mobile call function
-                                      }),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.stars),
-                              color: Colors.blueAccent,
-                              onPressed: () => {
-                                //invoke mobile call function
-                              },
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.call_rounded),
-                              color: Colors.indigo,
-                              onPressed: () => {
-                                //invoke mobile call function
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.call_rounded),
-                              color: Colors.indigo,
-                              onPressed: () => {
-                                //invoke mobile call function
-                              },
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.message_outlined),
-                              color: Colors.indigo,
-                              onPressed: () => {
-                                //invoke mobile call function
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.message_outlined),
-                              color: Colors.indigo,
-                              onPressed: () => {
-                                //invoke mobile call function
-                              },
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Icon(null),
-                            if (RecommendationModel.getRecommendations()[index]
-                                    .referee
-                                    .businessContact !=
-                                null)
-                              IconButton(
-                                icon: const Icon(Icons.arrow_drop_down),
-                                color: Colors.indigo,
-                                onPressed: () => {
-                                  //invoke mobile call function
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      title: const Text('Business Contact'),
-                                      content: Container(
-                                        //width: 150,
-                                        height: 200,
-                                        // color: Colors.indigoAccent
-                                        //     .withOpacity(0.3),
-                                        child: BusinessCard(
-                                          bizContact: RecommendationModel
-                                                  .getRecommendations()[index]
-                                              .referee,
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          //style:
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Colors.indigoAccent),
-                                            foregroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Colors.white),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text(
-                                            'Close',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                }, //onPressed: () => {AlertDialog()},
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+            ),
+            const Expanded(
+              child: RecommendationListView(),
+            ),
+          ],
         ),
 
         //add the bottom navigation bar to the page
@@ -324,7 +152,7 @@ class BusinessCard extends StatelessWidget {
                     ),
                   ]),
             ]),
-        Row(
+        const Row(
           children: [
             Expanded(
               child: Center(
@@ -347,6 +175,228 @@ class BusinessCard extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class RecommendationListView extends StatelessWidget {
+  const RecommendationListView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      //physics: const AlwaysScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemCount: RecommendationModel.getRecommendations().length,
+
+      padding: const EdgeInsets.all(15),
+      itemBuilder: (context, index) {
+        return Container(
+          height: 110,
+          //width: 100,
+          margin:
+              const EdgeInsets.only(top: 12, bottom: 12, left: 10, right: 10),
+          //padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.indigoAccent.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              Container(
+                margin:
+                    const EdgeInsets.only(top: 2, bottom: 2, left: 2, right: 2),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: CircleAvatar(
+                  maxRadius: 12,
+                  child: Text(
+                    '${index + 1}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(children: [
+                      Expanded(
+                        child: Text(
+                            RecommendationModel.getRecommendations()[index]
+                                .referee
+                                .fullName,
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold)),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.feedback,
+                        ),
+                        iconSize: 20,
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.phone,
+                        ),
+                        iconSize: 20,
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.message,
+                        ),
+                        iconSize: 20,
+                        onPressed: () {},
+                      ),
+                    ]),
+                    const Row(children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            'recommended by:',
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+                    Row(children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                              RecommendationModel.getRecommendations()[index]
+                                  .recommender
+                                  .fullName,
+                              style: const TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.normal)),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.phone,
+                        ),
+                        iconSize: 15,
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.message,
+                        ),
+                        iconSize: 15,
+                        onPressed: () {},
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+        // return ListTile(
+        //   leading: CircleAvatar(
+        //     maxRadius: 12,
+        //     child: Text(
+        //       '${index + 1}',
+        //       style: const TextStyle(
+        //         fontSize: 12,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        //   title: Text(
+        //     RecommendationModel.getRecommendations()[index].referee.fullName,
+        //     style: const TextStyle(
+        //       fontSize: 15,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        //   subtitle: Column(
+        //     children: [
+        //       const Row(
+        //         children: [
+        //           Padding(
+        //             padding: EdgeInsets.all(10),
+        //             child: Text('recommended by:',
+        //                 style: TextStyle(
+        //                     fontSize: 9, fontStyle: FontStyle.italic)),
+        //           ),
+        //         ],
+        //       ),
+        //       Row(
+        //         children: [
+        //           Container(
+        //             //width: 100,
+        //             margin: const EdgeInsets.only(
+        //                 left:
+        //                     10), //left alinging with the 'recommended by' text above
+        //             decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(10),
+        //               color: Colors.indigo.shade100.withOpacity(0.3),
+        //             ),
+        //             child: Row(
+        //               children: [
+        //                 Text(
+        //                   RecommendationModel.getRecommendations()[index]
+        //                       .recommender
+        //                       .fullName,
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         ],
+        //       )
+        //     ],
+        //   ),
+        //   trailing: Container(
+        //     //height: 150,
+        //     width: 120,
+
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       color: Colors.indigo.shade100.withOpacity(0.3),
+        //     ),
+        //     child: Row(
+        //       children: [
+        //         IconButton(
+        //           icon: const Icon(
+        //             Icons.feedback,
+        //           ),
+        //           iconSize: 20,
+        //           onPressed: () {},
+        //         ),
+        //         IconButton(
+        //           icon: const Icon(
+        //             Icons.phone,
+        //           ),
+        //           iconSize: 20,
+        //           onPressed: () {},
+        //         ),
+        //         IconButton(
+        //           icon: const Icon(
+        //             Icons.message,
+        //           ),
+        //           iconSize: 20,
+        //           onPressed: () {},
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // );
+      },
     );
   }
 }

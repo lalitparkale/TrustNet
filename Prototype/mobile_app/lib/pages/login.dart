@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         onRefreshToken: (Token token) {
           refreshToken = token.value;
         },
-        optionalParameters: [],
+        optionalParameters: const [],
         onRedirect: onRedirect,
         onErrorOrCancel: (context) => onRedirect(context),
         //userAgent: ,

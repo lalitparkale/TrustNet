@@ -30,11 +30,15 @@ class BusinessContact {
   late String headOfficeAddress;
   late String businessName;
   late String? businessABN;
+  late String? email;
+  late String? licenseNumber;
 
   BusinessContact(
       {required this.headOfficeAddress,
       required this.businessName,
-      this.businessABN});
+      this.businessABN,
+      this.email,
+      this.licenseNumber});
 }
 
 List<UserContact> getSharedContacts() {

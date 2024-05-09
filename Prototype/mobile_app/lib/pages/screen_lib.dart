@@ -1,6 +1,7 @@
 library screen_lib;
 
 import 'package:flutter/material.dart';
+import 'package:pickeze/pages/network.dart';
 import '../pages/home.dart';
 import '../pages/profile.dart';
 
@@ -41,7 +42,7 @@ BottomNavigationBar navBar(BuildContext context) {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const HomePage(title: 'Network')),
+                builder: (context) => const NetworkPage(title: 'Network')),
           )
         }
     },
