@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:pickeze/pages/biz.dart';
 import '../model/profile_model.dart';
 import '../model/recom_model.dart';
 import '../model/search_model.dart';
@@ -241,7 +242,16 @@ class RecommendationListView extends StatelessWidget {
                           Icons.feedback,
                         ),
                         iconSize: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BizPage(
+                                    bizUserContact: RecommendationModel
+                                            .getRecommendations()[index]
+                                        .referee)),
+                          );
+                        },
                       ),
                       IconButton(
                         icon: const Icon(

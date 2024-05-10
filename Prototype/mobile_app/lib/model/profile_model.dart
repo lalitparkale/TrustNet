@@ -30,6 +30,7 @@ class BusinessContact {
   late String headOfficeAddress;
   late String businessName;
   late String? businessABN;
+  late String? businessPhone;
   late String? email;
   late String? licenseNumber;
 
@@ -37,6 +38,7 @@ class BusinessContact {
       {required this.headOfficeAddress,
       required this.businessName,
       this.businessABN,
+      this.businessPhone,
       this.email,
       this.licenseNumber});
 }
