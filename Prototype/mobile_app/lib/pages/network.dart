@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pickeze/pages/recommendation.dart';
 
 //statefull page
 class NetworkPage extends StatefulWidget {

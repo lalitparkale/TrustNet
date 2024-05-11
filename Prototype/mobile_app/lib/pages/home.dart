@@ -15,10 +15,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Welcome ${globalUserProfile.name}!'),
+          title: Text('Welcome ${gUserProfile.name}!'),
         ),
         body: Center(
           child: Column(
@@ -79,6 +85,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     labelText: 'Search',
                     hintText: 'search for services, like "fix leaking pipe"',
+                    hintStyle: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                        fontStyle: FontStyle.italic),
 
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),

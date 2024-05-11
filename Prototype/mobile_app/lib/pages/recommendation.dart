@@ -86,7 +86,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
 }
 
 class BusinessCard extends StatelessWidget {
-  final UserContact bizContact;
+  final BusinessContact bizContact;
   const BusinessCard({
     super.key,
     required this.bizContact,
@@ -132,7 +132,7 @@ class BusinessCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      bizContact.businessContact!.businessName,
+                      bizContact.bizName,
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class BusinessCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      bizContact.businessContact!.headOfficeAddress,
+                      bizContact.headOfficeAddress,
                       style: const TextStyle(
                           fontSize: 12,
                           //fontWeight: FontWeight.bold,
@@ -232,8 +232,8 @@ class RecommendationListView extends StatelessWidget {
                       Expanded(
                         child: Text(
                             RecommendationModel.getRecommendations()[index]
-                                .referee
-                                .fullName,
+                                .tradie
+                                .bizName,
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.bold)),
                       ),
@@ -247,9 +247,9 @@ class RecommendationListView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BizPage(
-                                    bizUserContact: RecommendationModel
+                                    cBizContact: RecommendationModel
                                             .getRecommendations()[index]
-                                        .referee)),
+                                        .tradie)),
                           );
                         },
                       ),
@@ -289,7 +289,7 @@ class RecommendationListView extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 10),
                           child: Text(
                               RecommendationModel.getRecommendations()[index]
-                                  .recommender
+                                  .recommendedBy
                                   .fullName,
                               style: const TextStyle(
                                   fontSize: 11, fontWeight: FontWeight.normal)),

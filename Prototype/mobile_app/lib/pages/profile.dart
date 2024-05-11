@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickeze/globals.dart';
 import '../pages/login.dart';
 import '../pages/screen_lib.dart';
 import '../globals.dart' as globals;
@@ -14,21 +15,19 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            BasicProfileCard(),
-            Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            SharedContactsTile(),
-            Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-          ],
-        ),
+      body: const Column(
+        children: [
+          BasicProfileCard(),
+          Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+          SharedContactsTile(),
+          Divider(
+            color: Colors.grey,
+            thickness: 1,
+          ),
+        ],
       ),
       bottomNavigationBar: navBar(context),
     );
@@ -75,7 +74,7 @@ class SharedContactsTile extends StatelessWidget {
                 DataColumn(label: Text('Mobile')),
               ],
               rows: [
-                for (var contact in globals.globalSharedContacts)
+                for (var contact in globals.gSharedContacts)
                   DataRow(
                     cells: [
                       DataCell(Text(contact.fullName)),
@@ -198,7 +197,7 @@ class FormAddContactState extends State<FormAddContact> {
                     formKeyAddContact.currentState!.save();
                     if (formKeyAddContact.currentState!.validate()) {
                       //add contact to the list
-                      globals.globalSharedContacts.add(newContact);
+                      globals.gSharedContacts.add(newContact);
                       Navigator.of(context).pop();
                     }
                   },
@@ -241,61 +240,88 @@ class BasicProfileCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(10),
+          //display user profile
+          const Icon(
+            Icons.person,
+            size: 100,
+            color: Colors.indigo,
+            shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          profileLineItem('Name', globals.gUserProfile.name),
+          profileLineItem('Email', globals.gUserProfile.email),
+          profileLineItem('Postcode', globals.gUserProfile.postcode.toString()),
+          // Text('Name: ${globals.gUserProfile.name}',
+          //     style: const TextStyle(fontSize: 16)),
+          // const SizedBox(
+          //   height: 4,
+          // ),
+          // Text('Email: ${globals.gUserProfile.email}',
+          //     style: const TextStyle(fontSize: 16)),
+          // const SizedBox(
+          //   height: 4,
+          // ),
+          // const Text('Postcode: ', style: TextStyle(fontSize: 16)),
+          // TextField(
+          //   decoration: InputDecoration(
+          //     border: OutlineInputBorder(),
+          //     labelText: globals.gUserProfile.postcode.toString(),
+          //   ),
+          // ),
+          const SizedBox(height: 10),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LoginPage(title: 'Pickeze')),
+                );
+              },
+              child: const Text('Log out')),
+        ],
+      ),
+    );
+  }
+
+  Card profileLineItem(String cellTitle, String? cellValue) {
+    return Card(
+      margin: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 75,
             child: Text(
-              'Profile',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              '$cellTitle : ',
+              style:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
           ),
+          (cellValue != null)
+              ? Expanded(
+                  // child: Text(cellValue,
+                  //     style: const TextStyle(
+                  //         fontSize: 14, fontWeight: FontWeight.bold)),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: cellValue,
+                      helperText: cellTitle,
+                    ),
 
-          //display user profile
-          Row(
-            children: [
-              const Icon(
-                Icons.person,
-                size: 100,
-                color: Colors.indigo,
-                shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Name: ${globals.globalUserProfile.name}',
-                      style: const TextStyle(fontSize: 16)),
-                  const SizedBox(
-                    height: 4,
+                    onSubmitted: (value) =>
+                        gUserProfile.postcode = int.parse(value),
+                    // update postcode,
                   ),
-                  Text('Email: ${globals.globalUserProfile.email}',
-                      style: const TextStyle(fontSize: 16)),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text('Postcode: ${globals.globalUserProfile.postcode}',
-                      style: const TextStyle(fontSize: 16)),
-                  const SizedBox(height: 10),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const LoginPage(title: 'TrustNet')),
-                        );
-                      },
-                      child: const Text('Log out')),
-                ],
-              ),
-            ],
-          ),
+                )
+              : Expanded(
+                  child: Text('No $cellTitle Provided',
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey)),
+                ),
         ],
       ),
     );

@@ -3,9 +3,9 @@ import 'package:pickeze/model/profile_model.dart';
 
 //stateless page
 class BizPage extends StatelessWidget {
-  const BizPage({super.key, required this.bizUserContact});
+  const BizPage({super.key, required this.cBizContact});
 
-  final UserContact bizUserContact;
+  final BusinessContact cBizContact;
 
   @override
   Widget build(BuildContext context) {
@@ -24,24 +24,20 @@ class BizPage extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            bizUserContact.businessContact?.businessName != null
-                ? bizUserContact.businessContact!.businessName
-                : 'No Business Name Provided',
+            cBizContact.bizName ?? 'No Business Name Provided',
             style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 0, 17, 221)),
           ),
         ),
-        bizLineItem("Contact Name", bizUserContact.fullName),
-        bizLineItem("Contact Mobile", bizUserContact.mobile),
-        bizLineItem(
-            "Business Phone", bizUserContact.businessContact?.businessPhone),
-        bizLineItem("Email", bizUserContact.businessContact?.email),
-        bizLineItem(
-            "Address", bizUserContact.businessContact?.headOfficeAddress),
-        bizLineItem("ABN", bizUserContact.businessContact?.businessABN),
-        bizLineItem("Lincense", bizUserContact.businessContact?.licenseNumber),
+        bizLineItem("Contact Name", cBizContact.bizContactName),
+        bizLineItem("Contact Mobile", cBizContact.bizContactMobile),
+        bizLineItem("Business Phone", cBizContact.bizPhone),
+        bizLineItem("Email", cBizContact.bizEmail),
+        bizLineItem("Address", cBizContact.headOfficeAddress),
+        bizLineItem("ABN", cBizContact.bizABN),
+        bizLineItem("Lincense", cBizContact.licenseNumber),
       ]),
     );
   }
