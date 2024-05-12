@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pickeze/pages/biz.dart';
 import '../model/profile_model.dart';
 import '../model/recom_model.dart';
@@ -25,9 +26,11 @@ class _RecommendationPageState extends State<RecommendationPage> {
     //get the search text from the search model
     //SearchModel.getSearchText();
     readonlyTextController.text = SearchModel.getSearchText();
+    recommendations = RecommendationModel.getRecommendations();
   }
 
   final readonlyTextController = TextEditingController(text: 'temp');
+  late final List<RecommendationModel> recommendations;
 
   @override
   Widget build(BuildContext context) {
@@ -41,42 +44,51 @@ class _RecommendationPageState extends State<RecommendationPage> {
         ),
         body: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Text(
-                'Searched for : ',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+            searchBar(context),
+            if (SearchModel.getSearchText() != '') ...[
+              Container(
+                margin: const EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      maxRadius: 12,
+                      child: Text(
+                        recommendations.length.toString(),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text(
+                        'results for : ',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        '${SearchModel.getSearchText()}',
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic),
+                        //textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.left,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
-                readOnly: true,
-                controller: readonlyTextController,
-                style: const TextStyle(
-                  fontSize: 12,
-                  //fontWeight: FontWeight.bold,
-                ),
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  fillColor: Colors.grey.withOpacity(0.1),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  filled: true,
-                ),
+              Expanded(
+                child: RecommendationListView(recommendations: recommendations),
               ),
-            ),
-            const Expanded(
-              child: RecommendationListView(),
-            ),
+            ],
           ],
         ),
 
@@ -181,16 +193,20 @@ class BusinessCard extends StatelessWidget {
 }
 
 class RecommendationListView extends StatelessWidget {
+  final List<RecommendationModel> recommendations;
   const RecommendationListView({
     super.key,
+    required this.recommendations,
   });
 
   @override
   Widget build(BuildContext context) {
+    //get recommendations based on the search text
+    //var recommendations = RecommendationModel.getRecommendations();
     return ListView.builder(
       //physics: const AlwaysScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
-      itemCount: RecommendationModel.getRecommendations().length,
+      itemCount: recommendations.length,
 
       padding: const EdgeInsets.all(15),
       itemBuilder: (context, index) {
@@ -230,10 +246,7 @@ class RecommendationListView extends StatelessWidget {
                   children: [
                     Row(children: [
                       Expanded(
-                        child: Text(
-                            RecommendationModel.getRecommendations()[index]
-                                .tradie
-                                .bizName,
+                        child: Text(recommendations[index].tradie.bizName,
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.bold)),
                       ),
@@ -247,9 +260,8 @@ class RecommendationListView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BizPage(
-                                    cBizContact: RecommendationModel
-                                            .getRecommendations()[index]
-                                        .tradie)),
+                                    cBizContact:
+                                        recommendations[index].tradie)),
                           );
                         },
                       ),
@@ -288,9 +300,7 @@ class RecommendationListView extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: Text(
-                              RecommendationModel.getRecommendations()[index]
-                                  .recommendedBy
-                                  .fullName,
+                              recommendations[index].recommendedBy.fullName,
                               style: const TextStyle(
                                   fontSize: 11, fontWeight: FontWeight.normal)),
                         ),

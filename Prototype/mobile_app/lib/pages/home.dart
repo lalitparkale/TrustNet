@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../model/search_model.dart';
+
 import 'screen_lib.dart';
-import 'recommendation.dart';
+
 import '../globals.dart';
 
 class HomePage extends StatefulWidget {
@@ -75,45 +75,7 @@ class _HomePageState extends State<HomePage> {
               //     ],
               //   ),
               // ),
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 20, left: 20, right: 20, bottom: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    labelText: 'Search',
-                    hintText: 'search for services, like "fix leaking pipe"',
-                    hintStyle: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey,
-                        fontStyle: FontStyle.italic),
-
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {
-                        //invoke textfield onsubmitted event
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RecommendationPage()),
-                        );
-                      },
-                    ),
-                    //on change event to set the search text
-                  ),
-                  onChanged: (value) => SearchModel().searchText = value,
-                  onSubmitted: (value) {
-                    SearchModel().searchText = value;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RecommendationPage()),
-                    );
-                  },
-                ),
-              ),
+              searchBar(context),
             ],
           ),
         ),
