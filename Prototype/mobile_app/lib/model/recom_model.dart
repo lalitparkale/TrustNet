@@ -47,47 +47,11 @@ class RecommendationModel {
   static List<RecommendationModel> getRecommendations() {
     List<RecommendationModel> ret = <RecommendationModel>[];
 
-    List<String> categories = [
-      'plumber',
-      'electrician',
-      'carpenter',
-      'painter',
-      'gardener',
-      'cleaner',
-      'handyman',
-      'builder',
-      'tiler',
-      'landscaper',
-      'bricklayer',
-      'concreter',
-      'fencer',
-      'glazier',
-      'kitchen',
-      'bathroom',
-      'laundry',
-      'roofing',
-      'security',
-      'solar',
-      'windows',
-      'doors',
-      'awnings',
-      'blinds',
-      'curtains',
-      'shutters',
-      'furniture',
-      'appliances',
-      'aircon',
-      'pest',
-      'removalist',
-      'mover',
-      'mechanic',
-    ];
-
     // extract the trade category from search string
     List<String> searchedCategories = [];
-    for (var i = 0; i < categories.length; i++) {
-      if (SearchModel.getSearchText().toLowerCase().contains(categories[i])) {
-        searchedCategories.add(categories[i]);
+    for (var i = 0; i < gCategories.length; i++) {
+      if (SearchModel.getSearchText().toLowerCase().contains(gCategories[i])) {
+        searchedCategories.add(gCategories[i]);
       }
     }
 

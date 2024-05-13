@@ -161,7 +161,7 @@ class BusinessCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      bizContact.headOfficeAddress,
+                      bizContact.headOfficeAddress!,
                       style: const TextStyle(
                           fontSize: 12,
                           //fontWeight: FontWeight.bold,

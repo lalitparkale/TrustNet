@@ -32,9 +32,24 @@ class MyApp extends StatelessWidget {
     gAusPostCodes.clear();
     loadAustralianPostcodes();
 
-    gUserProfile.name = 'Name';
-    gUserProfile.email = 'name.l@test.com';
+    gUserProfile.name = 'Awesome';
+    gUserProfile.email = 'awesome@test.com';
     gUserProfile.postcode = 2000;
+
+    //Load user profile data from persistent file
+    UserProfile.loadUserProfileFromFile().then((value) {
+      gUserProfile = value;
+    });
+
+    //Load all shared contacts from persistent file
+    UserContact.loadSharedContactsFromFile().then((value) {
+      gSharedContacts = value;
+    });
+
+    //Load all shared Business contacts from persistent file
+    BusinessContact.loadSharedBizContactsFromFile().then((value) {
+      gSharedBizContacts = value;
+    });
 
     //gSharedContacts = getSharedContacts();
     //gSharedBizContacts = getSharedBizContacts();
@@ -110,7 +125,7 @@ class MyApp extends StatelessWidget {
       getLatLonforPooledContacts();
       getLatLonforBizContacts();
     }).onError((error, stackTrace) {
-      print(error);
+      //print(error);
     });
   }
 
