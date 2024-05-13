@@ -18,6 +18,10 @@ class RecommendationModel {
 
     Map<BusinessContact, double> distMap = <BusinessContact, double>{};
 
+    var latlon = getLatLonfromPostCode(gUserProfile.postcode);
+    gUserProfile.lat = latlon[0];
+    gUserProfile.lon = latlon[1];
+
     for (var i = 0; i < gPooledBizContacts.length; i++) {
       double dist = getDistanceFromLatLonInKm(
           gUserProfile.lat,
@@ -76,7 +80,7 @@ class RecommendationModel {
       'pest',
       'removalist',
       'mover',
-      'mechanic'
+      'mechanic',
     ];
 
     // extract the trade category from search string

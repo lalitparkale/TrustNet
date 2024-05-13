@@ -23,15 +23,18 @@ class MyApp extends StatelessWidget {
     //initialise the app
 
     //gPooledBizContacts - read tradies data from csv file and populate global object
+    gPooledBizContacts.clear();
     loadTradiesDb();
     //gPooledContacts - read pooled users data from csv file and populate global object
+    gPooledContacts.clear();
     loadUsersDb();
     //read australian post codes from csv file and populate global object
+    gAusPostCodes.clear();
     loadAustralianPostcodes();
 
     gUserProfile.name = 'Name';
     gUserProfile.email = 'name.l@test.com';
-    gUserProfile.postcode = 2173;
+    gUserProfile.postcode = 2000;
 
     //gSharedContacts = getSharedContacts();
     //gSharedBizContacts = getSharedBizContacts();
@@ -82,28 +85,32 @@ class MyApp extends StatelessWidget {
       csvLines = value.split("\n");
       //print('From loadasset invocation : $csvLines');
 
-      //loop through csvLines. Skip the first line as it contains headers
-      for (var i = 1; i < csvLines.length; i++) {
-        csvLineCells = csvLines[i].split(",");
-        //print(csvLineCells[1]);
+      if (csvLines.length > 1) {
+        //loop through csvLines. Skip the first line as it contains headers
+        for (var i = 1; i < csvLines.length; i++) {
+          csvLineCells = csvLines[i].split(",");
+          //print(csvLineCells[1]);
 
-        //create Auspostcode object
-        AusPostcode ausPostcode = AusPostcode(
-          id: int.parse(csvLineCells[0]),
-          postcode: int.parse(csvLineCells[1]),
-          locality: csvLineCells[2],
-          state: csvLineCells[3],
-          longitude: double.parse(csvLineCells[4]),
-          latitude: double.parse(csvLineCells[5]),
-        );
+          if (csvLineCells.length > 1) {
+            //create Auspostcode object
+            AusPostcode ausPostcode = AusPostcode(
+              id: int.parse(csvLineCells[0]),
+              postcode: int.parse(csvLineCells[1]),
+              locality: csvLineCells[2],
+              state: csvLineCells[3],
+              longitude: double.parse(csvLineCells[4]),
+              latitude: double.parse(csvLineCells[5]),
+            );
 
-        gAusPostCodes.add(ausPostcode);
+            gAusPostCodes.add(ausPostcode);
+          }
+        }
       }
 
       getLatLonforPooledContacts();
       getLatLonforBizContacts();
     }).onError((error, stackTrace) {
-      //print(error);
+      print(error);
     });
   }
 
@@ -123,23 +130,25 @@ class MyApp extends StatelessWidget {
         csvLineCells = csvLines[i].split(",");
         //print(csvLineCells[1]);
 
-        //create BusinessContact object
-        BusinessContact bizContact = BusinessContact(
-          //id: int.parse(csvLineCells[0]),
-          bizName: csvLineCells[1],
-          bizPhone: csvLineCells[2],
-          bizCategory: csvLineCells[3],
-          //subcategory [4]
-          postcode: int.parse(csvLineCells[5]),
-          headOfficeAddress: csvLineCells[6],
-          bizEmail: csvLineCells[7],
-          //hours: csvLineCells[8],
-          bizABN: csvLineCells[9],
-          licenseNumber: csvLineCells[10],
-          servicesTags: csvLineCells[11],
-        );
+        if (csvLineCells.length > 1) {
+          //create BusinessContact object
+          BusinessContact bizContact = BusinessContact(
+            //id: int.parse(csvLineCells[0]),
+            bizName: csvLineCells[1],
+            bizPhone: csvLineCells[2],
+            bizCategory: csvLineCells[3],
+            //subcategory [4]
+            postcode: int.parse(csvLineCells[5]),
+            headOfficeAddress: csvLineCells[6],
+            bizEmail: csvLineCells[7],
+            //hours: csvLineCells[8],
+            bizABN: csvLineCells[9],
+            licenseNumber: csvLineCells[10],
+            servicesTags: csvLineCells[11],
+          );
 
-        gPooledBizContacts.add(bizContact);
+          gPooledBizContacts.add(bizContact);
+        }
       }
     }).onError((error, stackTrace) {
       //print(error);
@@ -161,19 +170,20 @@ class MyApp extends StatelessWidget {
       for (var i = 1; i < csvLines.length; i++) {
         csvLineCells = csvLines[i].split(",");
         //print(csvLineCells[1]);
+        if (csvLineCells.length > 1) {
+          //create BusinessContact object
+          UserContact userContact = UserContact(
+            //id: int.parse(csvLineCells[0]),
+            fName: csvLineCells[1],
+            fullName: csvLineCells[2],
+            mobile: csvLineCells[3],
+            //email: int.parse(csvLineCells[4]),
+            postcode: int.parse(csvLineCells[5]),
+            //gender: int.parse(csvLineCells[6]),
+          );
 
-        //create BusinessContact object
-        UserContact userContact = UserContact(
-          //id: int.parse(csvLineCells[0]),
-          fName: csvLineCells[1],
-          fullName: csvLineCells[2],
-          mobile: csvLineCells[3],
-          //email: int.parse(csvLineCells[4]),
-          postcode: int.parse(csvLineCells[5]),
-          //gender: int.parse(csvLineCells[6]),
-        );
-
-        gPooledContacts.add(userContact);
+          gPooledContacts.add(userContact);
+        }
       }
     }).onError((error, stackTrace) {
       //print(error);

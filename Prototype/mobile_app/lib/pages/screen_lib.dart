@@ -16,7 +16,7 @@ Container searchBar(BuildContext context) {
           borderRadius: BorderRadius.circular(25),
         ),
         labelText: 'Search',
-        hintText: 'search for services, like "fix leaking pipe"',
+        hintText: 'search for services, like fix leaking pipe',
         hintStyle: const TextStyle(
             fontSize: 11, color: Colors.grey, fontStyle: FontStyle.italic),
 
@@ -33,7 +33,7 @@ Container searchBar(BuildContext context) {
         ),
         //on change event to set the search text
       ),
-      onChanged: (value) => SearchModel().searchText = value,
+      //onChanged: (value) => SearchModel().searchText = value,
       onSubmitted: (value) {
         SearchModel().searchText = value;
         Navigator.push(

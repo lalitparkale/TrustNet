@@ -15,8 +15,8 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: const Column(
-        children: [
+      body: ListView(
+        children: const [
           BasicProfileCard(),
           Divider(
             color: Colors.grey,
@@ -244,12 +244,9 @@ class BasicProfileCard extends StatelessWidget {
           //display user profile
           const Icon(
             Icons.person,
-            size: 100,
+            size: 64,
             color: Colors.indigo,
             shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
-          ),
-          const SizedBox(
-            width: 10,
           ),
           profileLineItem('Name', globals.gUserProfile.name),
           profileLineItem('Email', globals.gUserProfile.email),
@@ -291,34 +288,50 @@ class BasicProfileCard extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       child: Row(
         children: [
-          SizedBox(
-            width: 75,
-            child: Text(
-              '$cellTitle : ',
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-            ),
-          ),
+          // Text(
+          //   '$cellTitle : ',
+          //   style: const TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
+          // ),
           (cellValue != null)
               ? Expanded(
                   // child: Text(cellValue,
                   //     style: const TextStyle(
                   //         fontSize: 14, fontWeight: FontWeight.bold)),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: cellValue,
-                      helperText: cellTitle,
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: TextField(
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.normal),
+                      controller: TextEditingController()..text = cellValue,
+                      decoration: InputDecoration(
+                        labelText: cellTitle,
+                        //helperText: cellTitle,
+                        labelStyle: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
 
-                    onSubmitted: (value) =>
-                        gUserProfile.postcode = int.parse(value),
-                    // update postcode,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.indigo,
+                          ),
+                        ),
+                      ),
+                      onSubmitted: (value) => (cellTitle == 'Name')
+                          ? gUserProfile.name = value
+                          : (cellTitle == 'Email')
+                              ? gUserProfile.email = value
+                              : (cellTitle == 'Postcode')
+                                  ? gUserProfile.postcode = int.parse(value)
+                                  : gUserProfile.postcode,
+                    ),
                   ),
                 )
               : Expanded(
                   child: Text('No $cellTitle Provided',
                       style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.normal,
                           color: Colors.grey)),
                 ),

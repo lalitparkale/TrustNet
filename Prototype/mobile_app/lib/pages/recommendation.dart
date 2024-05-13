@@ -1,7 +1,6 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pickeze/pages/biz.dart';
 import '../model/profile_model.dart';
 import '../model/recom_model.dart';
@@ -23,20 +22,20 @@ class _RecommendationPageState extends State<RecommendationPage> {
   @override
   void initState() {
     super.initState();
-    //get the search text from the search model
-    //SearchModel.getSearchText();
-    readonlyTextController.text = SearchModel.getSearchText();
-    recommendations = RecommendationModel.getRecommendations();
+
+    cRecommendations = RecommendationModel.getRecommendations();
   }
 
-  final readonlyTextController = TextEditingController(text: 'temp');
-  late final List<RecommendationModel> recommendations;
+  late List<RecommendationModel> cRecommendations = [];
+  String cSearchText = '';
 
   @override
   Widget build(BuildContext context) {
     //get recommendations based on the search text
 
     //_getInitInfo(); //invocation not required after changing this to initState
+    cSearchText = SearchModel.getSearchText();
+    SearchModel().searchText = '';
 
     return Scaffold(
         appBar: AppBar(
@@ -45,55 +44,62 @@ class _RecommendationPageState extends State<RecommendationPage> {
         body: Column(
           children: [
             searchBar(context),
-            if (SearchModel.getSearchText() != '') ...[
-              Container(
-                margin: const EdgeInsets.only(left: 10, right: 10),
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      maxRadius: 12,
-                      child: Text(
-                        recommendations.length.toString(),
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Text(
-                        'results for : ',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        '${SearchModel.getSearchText()}',
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic),
-                        //textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            if (cSearchText != '') ...[
+              searchResultContainer(cRecommendations.length, cSearchText),
               Expanded(
-                child: RecommendationListView(recommendations: recommendations),
+                child:
+                    RecommendationListView(recommendations: cRecommendations),
               ),
+            ] else ...[
+              searchResultContainer(0, cSearchText),
             ],
           ],
         ),
 
         //add the bottom navigation bar to the page
         bottomNavigationBar: navBar(context));
+  }
+
+  Container searchResultContainer(int len, String searchText) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          CircleAvatar(
+            maxRadius: 12,
+            child: Text(
+              '$len',
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(
+              'results ${(searchText != '' ? 'for :' : '')}',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(
+              searchText,
+              style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic),
+              //textAlign: TextAlign.left,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -326,96 +332,6 @@ class RecommendationListView extends StatelessWidget {
             ],
           ),
         );
-        // return ListTile(
-        //   leading: CircleAvatar(
-        //     maxRadius: 12,
-        //     child: Text(
-        //       '${index + 1}',
-        //       style: const TextStyle(
-        //         fontSize: 12,
-        //         fontWeight: FontWeight.bold,
-        //       ),
-        //     ),
-        //   ),
-        //   title: Text(
-        //     RecommendationModel.getRecommendations()[index].referee.fullName,
-        //     style: const TextStyle(
-        //       fontSize: 15,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        //   subtitle: Column(
-        //     children: [
-        //       const Row(
-        //         children: [
-        //           Padding(
-        //             padding: EdgeInsets.all(10),
-        //             child: Text('recommended by:',
-        //                 style: TextStyle(
-        //                     fontSize: 9, fontStyle: FontStyle.italic)),
-        //           ),
-        //         ],
-        //       ),
-        //       Row(
-        //         children: [
-        //           Container(
-        //             //width: 100,
-        //             margin: const EdgeInsets.only(
-        //                 left:
-        //                     10), //left alinging with the 'recommended by' text above
-        //             decoration: BoxDecoration(
-        //               borderRadius: BorderRadius.circular(10),
-        //               color: Colors.indigo.shade100.withOpacity(0.3),
-        //             ),
-        //             child: Row(
-        //               children: [
-        //                 Text(
-        //                   RecommendationModel.getRecommendations()[index]
-        //                       .recommender
-        //                       .fullName,
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ],
-        //       )
-        //     ],
-        //   ),
-        //   trailing: Container(
-        //     //height: 150,
-        //     width: 120,
-
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(10),
-        //       color: Colors.indigo.shade100.withOpacity(0.3),
-        //     ),
-        //     child: Row(
-        //       children: [
-        //         IconButton(
-        //           icon: const Icon(
-        //             Icons.feedback,
-        //           ),
-        //           iconSize: 20,
-        //           onPressed: () {},
-        //         ),
-        //         IconButton(
-        //           icon: const Icon(
-        //             Icons.phone,
-        //           ),
-        //           iconSize: 20,
-        //           onPressed: () {},
-        //         ),
-        //         IconButton(
-        //           icon: const Icon(
-        //             Icons.message,
-        //           ),
-        //           iconSize: 20,
-        //           onPressed: () {},
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // );
       },
     );
   }
