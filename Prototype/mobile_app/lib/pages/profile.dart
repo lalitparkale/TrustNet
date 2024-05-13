@@ -7,14 +7,9 @@ import '../globals.dart' as globals;
 import '../model/profile_model.dart';
 
 //create profile screen
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,16 +40,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class SharedBizContactsTile extends StatefulWidget {
+class SharedBizContactsTile extends StatelessWidget {
   const SharedBizContactsTile({
     super.key,
   });
 
-  @override
-  State<SharedBizContactsTile> createState() => _SharedBizContactsTileState();
-}
-
-class _SharedBizContactsTileState extends State<SharedBizContactsTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,7 +158,6 @@ class FormAddBizContactState extends State<FormAddBizContact> {
 
   @override
   Widget build(BuildContext context) {
-    //UserContact newContact = UserContact(fName: '', fullName: '', mobile: '');
     BusinessContact newBizContact = BusinessContact(
       bizName: '',
       bizContactName: '',
@@ -270,7 +259,12 @@ class FormAddBizContactState extends State<FormAddBizContact> {
                       globals.gSharedBizContacts.add(newBizContact);
                       saveSharedBizContacts();
 
-                      Navigator.of(context).pop();
+                      //navigate to profile page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfilePage()),
+                      );
                     }
                   },
                   child: const Text('Add'),
@@ -302,16 +296,11 @@ class FormAddBizContactState extends State<FormAddBizContact> {
   }
 }
 
-class SharedContactsTile extends StatefulWidget {
+class SharedContactsTile extends StatelessWidget {
   const SharedContactsTile({
     super.key,
   });
 
-  @override
-  State<SharedContactsTile> createState() => _SharedContactsTileState();
-}
-
-class _SharedContactsTileState extends State<SharedContactsTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -486,7 +475,12 @@ class FormAddContactState extends State<FormAddContact> {
                       globals.gSharedContacts.add(newContact);
                       saveSharedContacts();
 
-                      Navigator.of(context).pop();
+                      //navigate to profile page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfilePage()),
+                      );
                     }
                   },
                   child: const Text('Add'),
