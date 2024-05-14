@@ -33,7 +33,7 @@ Container searchBar(BuildContext context) {
         ),
         //on change event to set the search text
       ),
-      //onChanged: (value) => SearchModel().searchText = value,
+      onChanged: (value) => SearchModel().searchText = value,
       onSubmitted: (value) {
         SearchModel().searchText = value;
         Navigator.push(

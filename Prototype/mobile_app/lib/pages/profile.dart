@@ -79,49 +79,58 @@ class SharedBizContactsTile extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          Container(
+            height: 250,
             padding: const EdgeInsets.all(2),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+
               //physics: const AlwaysScrollableScrollPhysics(),
-              child: DataTable(
-                sortColumnIndex: 0,
-                sortAscending: true,
-                //showCheckboxColumn: true,
-                headingTextStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  //color: Colors.white,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: DataTable(
+                  sortColumnIndex: 0,
+                  sortAscending: true,
+                  //showCheckboxColumn: true,
+                  headingTextStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    //color: Colors.white,
+                  ),
+                  columns: const [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Mobile')),
+                    DataColumn(label: Text('Category')),
+                    DataColumn(label: Text('Postcode')),
+                  ],
+                  rows: [
+                    for (var contact in globals.gSharedBizContacts)
+                      DataRow(
+                        cells: [
+                          DataCell(Text(contact.bizName,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal))),
+                          DataCell(Text(contact.bizContactMobile!,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal))),
+                          DataCell(Text(contact.bizCategory!,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal))),
+                          DataCell(Text(contact.postcode.toString(),
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal))),
+                        ],
+                        onSelectChanged: (newValue) {
+                          //do something
+                          if (newValue == true) {}
+                        },
+                      ),
+                  ],
                 ),
-                columns: const [
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Mobile')),
-                  DataColumn(label: Text('Category')),
-                  DataColumn(label: Text('Postcode')),
-                ],
-                rows: [
-                  for (var contact in globals.gSharedBizContacts)
-                    DataRow(
-                      cells: [
-                        DataCell(Text(contact.bizName,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.normal))),
-                        DataCell(Text(contact.bizContactMobile!,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.normal))),
-                        DataCell(Text(contact.bizCategory!,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.normal))),
-                        DataCell(Text(contact.postcode.toString(),
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.normal))),
-                      ],
-                      onSelectChanged: (newValue) {
-                        //do something
-                        if (newValue == true) {}
-                      },
-                    ),
-                ],
               ),
             ),
           ),
@@ -335,40 +344,46 @@ class SharedContactsTile extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          Container(
+            height: 250,
             padding: const EdgeInsets.all(2),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: DataTable(
-                sortColumnIndex: 0,
-                sortAscending: true,
-                //showCheckboxColumn: true,
-                headingTextStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  //color: Colors.white,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: DataTable(
+                  sortColumnIndex: 0,
+                  sortAscending: true,
+                  //showCheckboxColumn: true,
+                  headingTextStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    //color: Colors.white,
+                  ),
+                  columns: const [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Mobile')),
+                  ],
+                  rows: [
+                    for (var contact in globals.gSharedContacts)
+                      DataRow(
+                        cells: [
+                          DataCell(Text(contact.fullName,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal))),
+                          DataCell(Text(contact.mobile,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal))),
+                        ],
+                        onSelectChanged: (newValue) {
+                          //do something
+                          if (newValue == true) {}
+                        },
+                      ),
+                  ],
                 ),
-                columns: const [
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Mobile')),
-                ],
-                rows: [
-                  for (var contact in globals.gSharedContacts)
-                    DataRow(
-                      cells: [
-                        DataCell(Text(contact.fullName,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.normal))),
-                        DataCell(Text(contact.mobile,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.normal))),
-                      ],
-                      onSelectChanged: (newValue) {
-                        //do something
-                        if (newValue == true) {}
-                      },
-                    ),
-                ],
               ),
             ),
           ),
