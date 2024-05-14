@@ -541,84 +541,192 @@ class BasicProfileCard extends StatelessWidget {
         color: Colors.indigoAccent.withOpacity(0.3),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      child: const Column(
         children: [
           //display user profile
-          const Icon(
+          Icon(
             Icons.person,
             size: 64,
             color: Colors.indigo,
             shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
           ),
-          profileLineItem('Name', globals.gUserProfile.name),
-          profileLineItem('Email', globals.gUserProfile.email),
-          profileLineItem('Postcode', globals.gUserProfile.postcode.toString()),
+          // profileLineItem('Name', globals.gUserProfile.name),
+          // profileLineItem('Mobile', globals.gUserProfile.mobile),
+          // profileLineItem('Postcode', globals.gUserProfile.postcode.toString()),
+          // //profileLineItem('Email', globals.gUserProfile.email),
+          FormUserProfile(),
 
-          const SizedBox(height: 10),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const LoginPage(title: 'Pickeze')),
-                );
-              },
-              child: const Text('Log out')),
+          //SizedBox(height: 10),
+          //
+          // TextButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) =>
+          //                 const LoginPage(title: 'Pickeze Login')),
+          //       );
+          //     },
+          //     child: const Text('Log out')),
         ],
       ),
     );
   }
 
-  Card profileLineItem(String cellTitle, String? cellValue) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Row(
-        children: [
-          if (cellValue != null)
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: TextField(
-                  style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.normal),
-                  controller: TextEditingController()..text = cellValue,
-                  decoration: InputDecoration(
-                    labelText: cellTitle,
-                    //helperText: cellTitle,
-                    labelStyle: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+  Widget profileLineItem(String cellTitle, String? cellValue) {
+    return Row(
+      children: [
+        if (cellValue != null)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: TextField(
+                style: const TextStyle(
+                    fontSize: 12, fontWeight: FontWeight.normal),
+                controller: TextEditingController()..text = cellValue,
+                decoration: InputDecoration(
+                  labelText: cellTitle,
+                  //helperText: cellTitle,
+                  labelStyle: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
 
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.indigo,
-                      ),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.indigo,
                     ),
                   ),
-                  onSubmitted: (value) {
-                    //save user profile to db
-                    if (cellTitle == 'Name') {
-                      gUserProfile.name = value;
-                    } else if (cellTitle == 'Email') {
-                      gUserProfile.email = value;
-                    } else if (cellTitle == 'Postcode') {
-                      gUserProfile.postcode = int.parse(value);
+                ),
+                onChanged: (value) {},
+                onSubmitted: (value) {
+                  //save user profile to db
+                  if (cellTitle == 'Name') {
+                    gUserProfile.name = value;
+                  } else if (cellTitle == 'Email') {
+                    gUserProfile.email = value;
+                  } else if (cellTitle == 'Postcode') {
+                    gUserProfile.postcode = int.parse(value);
+                  } else if (cellTitle == 'Mobile') {
+                    gUserProfile.mobile = value;
+                  }
+                  saveUserProfile();
+                },
+              ),
+            ),
+          )
+        else
+          Expanded(
+            child: Text('No $cellTitle Provided',
+                style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey)),
+          ),
+      ],
+    );
+  }
+}
+
+class FormUserProfile extends StatefulWidget {
+  const FormUserProfile({super.key});
+
+  @override
+  State<FormUserProfile> createState() => FormUserProfileState();
+}
+
+class FormUserProfileState extends State<FormUserProfile> {
+  final GlobalKey<FormState> formKeyProfile = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    //UserContact newContact = UserContact(fName: '', fullName: '', mobile: '');
+
+    return Form(
+      key: formKeyProfile,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: TextEditingController()..text = gUserProfile.name,
+            onSaved: (newValue) {
+              gUserProfile.name = newValue!;
+            },
+            decoration: const InputDecoration(
+              hintText: 'Full Name',
+              labelText: 'Full Name',
+            ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter full name';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: TextEditingController()..text = gUserProfile.mobile,
+            onSaved: (newValue) {
+              gUserProfile.mobile = newValue!;
+            },
+            decoration: const InputDecoration(
+              hintText: 'Mobile',
+              labelText: 'Mobile',
+            ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[+0-9]')),
+            ],
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter mobile number';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: TextEditingController()
+              ..text = gUserProfile.postcode.toString(),
+            onSaved: (newValue) {
+              if ((newValue != null) && (newValue.isNotEmpty)) {
+                gUserProfile.postcode = int.parse(newValue);
+              }
+            },
+            decoration: const InputDecoration(
+              hintText: 'Postcode',
+              labelText: 'Postcode',
+            ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            ],
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your post code';
+              }
+              return null;
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigoAccent.withOpacity(0.5),
+                  ),
+                  onPressed: () {
+                    // Validate will return true if the form is valid, or false if
+                    // the form is invalid.
+                    formKeyProfile.currentState!.save();
+                    if (formKeyProfile.currentState!.validate()) {
+                      //save user profile to db
+                      saveUserProfile();
                     }
-                    saveUserProfile();
                   },
+                  child: const Text('Save'),
                 ),
               ),
-            )
-          else
-            Expanded(
-              child: Text('No $cellTitle Provided',
-                  style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey)),
-            ),
+            ],
+          ),
         ],
       ),
     );

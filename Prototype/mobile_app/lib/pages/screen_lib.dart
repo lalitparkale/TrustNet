@@ -1,7 +1,7 @@
 library screen_lib;
 
 import 'package:flutter/material.dart';
-import 'package:pickeze/model/search_model.dart';
+import 'package:pickeze/globals.dart';
 import 'package:pickeze/pages/network.dart';
 import 'package:pickeze/pages/recommendation.dart';
 import '../pages/home.dart';

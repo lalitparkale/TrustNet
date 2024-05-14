@@ -1,7 +1,6 @@
 //import 'package:mobile_app/model/profile_model.dart';
 //import package profile_model.dart
 import 'package:pickeze/globals.dart';
-import 'package:pickeze/model/search_model.dart';
 import '../model/profile_model.dart';
 
 class RecommendationModel {

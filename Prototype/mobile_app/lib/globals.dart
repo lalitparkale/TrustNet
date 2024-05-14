@@ -3,10 +3,35 @@ library globals;
 import 'dart:io';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
-
-//import 'package:mobile_app/main.dart';
-//import 'package:mobile_app/lib/model/profile_model.dart';
 import 'model/profile_model.dart';
+
+//number of async initialisation activities
+const int initActivities = 6;
+//counter to track the number of async initialisation activities.
+//After all async init activities are done, check for user profile
+int gInitCounter = 0;
+
+void incrementInitCounter() async {
+  gInitCounter++;
+}
+
+//async function that waits for all async init activities to complete
+Future<void> waitForInit() async {
+  while (gInitCounter < initActivities) {
+    await Future.delayed(const Duration(milliseconds: 200));
+  }
+}
+
+//create a static class to hold the search text
+class SearchModel {
+  static String _searchText = '';
+
+  static getSearchText() => _searchText;
+
+  set searchText(String value) {
+    _searchText = value;
+  }
+}
 
 //create a static variable for userprofile
 UserProfile gUserProfile = UserProfile(isVerified: 0);
@@ -130,7 +155,7 @@ void saveSharedContacts() {
 void saveSharedBizContacts() {
   //save user profile to db
   BusinessContact.saveSharedBizContactsToFile(gSharedBizContacts);
-} 
+}
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 

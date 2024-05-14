@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pickeze/pages/profile.dart';
 import '../pages/home.dart';
 //import '../pages/login.dart';
 import '../globals.dart';
@@ -22,6 +23,10 @@ class MyApp extends StatelessWidget {
   void getInitInfo() {
     //initialise the app
 
+    gUserProfile.name = 'Awesome';
+    gUserProfile.email = '';
+    gUserProfile.postcode = 0;
+
     //gPooledBizContacts - read tradies data from csv file and populate global object
     gPooledBizContacts.clear();
     loadTradiesDb();
@@ -32,23 +37,22 @@ class MyApp extends StatelessWidget {
     gAusPostCodes.clear();
     loadAustralianPostcodes();
 
-    gUserProfile.name = 'Awesome';
-    gUserProfile.email = 'awesome@test.com';
-    gUserProfile.postcode = 2000;
-
     //Load user profile data from persistent file
     UserProfile.loadUserProfileFromFile().then((value) {
       gUserProfile = value;
+      incrementInitCounter();
     });
 
     //Load all shared contacts from persistent file
     UserContact.loadSharedContactsFromFile().then((value) {
       gSharedContacts = value;
+      incrementInitCounter();
     });
 
     //Load all shared Business contacts from persistent file
     BusinessContact.loadSharedBizContactsFromFile().then((value) {
       gSharedBizContacts = value;
+      incrementInitCounter();
     });
 
     //gSharedContacts = getSharedContacts();
@@ -127,6 +131,8 @@ class MyApp extends StatelessWidget {
     }).onError((error, stackTrace) {
       //print(error);
     });
+
+    incrementInitCounter();
   }
 
   //create function to read tradies data from csv file
@@ -168,6 +174,8 @@ class MyApp extends StatelessWidget {
     }).onError((error, stackTrace) {
       //print(error);
     });
+
+    incrementInitCounter();
   }
 
   //create function to read tradies data from csv file
@@ -203,6 +211,8 @@ class MyApp extends StatelessWidget {
     }).onError((error, stackTrace) {
       //print(error);
     });
+
+    incrementInitCounter();
   }
 
   // This widget is the root of your application.
@@ -226,6 +236,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomePage(title: 'Pickeze - word of friends!'),
         '/myappname': (context) =>
             const HomePage(title: 'Pickeze - word of friends!'),
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }

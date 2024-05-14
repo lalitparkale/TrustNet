@@ -24,7 +24,7 @@ class BizPage extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            cBizContact.bizName ?? 'No Business Name Provided',
+            cBizContact.bizName,
             style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,

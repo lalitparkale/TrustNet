@@ -5,6 +5,7 @@ import 'package:pickeze/globals.dart';
 class UserProfile {
   late String name = '';
   late String email = '';
+  String mobile = '';
   //String photoUrl;
   late int postcode = 0;
   double lat = 0;
@@ -17,6 +18,7 @@ class UserProfile {
   UserProfile.fromJson(Map<String, dynamic> json)
       : name = json['name'] as String,
         email = json['email'] as String,
+        mobile = json['mobile'] as String,
         postcode = json['postcode'] as int,
         lat = json['lat'] as double,
         lon = json['lon'] as double,
@@ -24,6 +26,7 @@ class UserProfile {
 
   Map<String, dynamic> toJson() => {
         'name': name,
+        'mobile': mobile,
         'email': email,
         'postcode': postcode,
         'lat': lat,
