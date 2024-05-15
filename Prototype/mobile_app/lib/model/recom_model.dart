@@ -3,83 +3,147 @@
 import 'package:pickeze/globals.dart';
 import '../model/profile_model.dart';
 
-class RecommendationModel {
-  BusinessContact tradie;
-  UserContact recommendedBy;
+Map<BusinessContact, double> getNearestBizContacts() {
+  //1. get LatLon for all pooled contacts
+  //2. get distance from user's postcode for each pooled contact
+  //3. sort the contacts by distance
+  //4. return the sorted list
 
-  RecommendationModel({required this.tradie, required this.recommendedBy});
+  Map<BusinessContact, double> distMap = <BusinessContact, double>{};
 
-  static Map<BusinessContact, double> getNearestBizContacts() {
-    //1. get LatLon for all pooled contacts
-    //2. get distance from user's postcode for each pooled contact
-    //3. sort the contacts by distance
-    //4. return the sorted list
+  var latlon = getLatLonfromPostCode(gUserProfile.postcode);
+  gUserProfile.lat = latlon[0];
+  gUserProfile.lon = latlon[1];
 
-    Map<BusinessContact, double> distMap = <BusinessContact, double>{};
+  for (var i = 0; i < gAllBizContacts.length; i++) {
+    double dist = getDistanceFromLatLonInKm(gUserProfile.lat, gUserProfile.lon,
+        gAllBizContacts[i].lat, gAllBizContacts[i].lon);
 
-    var latlon = getLatLonfromPostCode(gUserProfile.postcode);
-    gUserProfile.lat = latlon[0];
-    gUserProfile.lon = latlon[1];
-
-    for (var i = 0; i < gPooledBizContacts.length; i++) {
-      double dist = getDistanceFromLatLonInKm(
-          gUserProfile.lat,
-          gUserProfile.lon,
-          gPooledBizContacts[i].lat,
-          gPooledBizContacts[i].lon);
-
-      distMap.addEntries([MapEntry(gPooledBizContacts[i], dist)]);
-    }
-
-    //var sortedKeys = distMap.values.toList()..sort();
-    final sortedMap = Map.fromEntries(
-      distMap.entries.toList()
-        ..sort(
-          //(e1, e2) => e1.key.compareTo(e2.key),
-          (e1, e2) => e1.value.compareTo(e2.value),
-        ),
-    );
-
-    return sortedMap;
+    distMap.addEntries([MapEntry(gAllBizContacts[i], dist)]);
   }
 
-  static List<RecommendationModel> getRecommendations() {
-    List<RecommendationModel> ret = <RecommendationModel>[];
+  //var sortedKeys = distMap.values.toList()..sort();
+  final sortedMap = Map.fromEntries(
+    distMap.entries.toList()
+      ..sort(
+        //(e1, e2) => e1.key.compareTo(e2.key),
+        (e1, e2) => e1.value.compareTo(e2.value),
+      ),
+  );
 
-    // extract the trade category from search string
-    List<String> searchedCategories = [];
-    for (var i = 0; i < gCategories.length; i++) {
-      if (SearchModel.getSearchText().toLowerCase().contains(gCategories[i])) {
-        searchedCategories.add(gCategories[i]);
-      }
+  return sortedMap;
+}
+
+List<RecommendationModel> getRecommendations() {
+  List<RecommendationModel> ret = <RecommendationModel>[];
+
+  // extract the trade category from search string
+  List<String> searchedCategories = [];
+  for (var i = 0; i < gCategories.length; i++) {
+    if (SearchModel.getSearchText().toLowerCase().contains(gCategories[i])) {
+      searchedCategories.add(gCategories[i]);
+    }
+  }
+  if (searchedCategories.isEmpty) return ret;
+
+  List<double> userLatLon = getLatLonfromPostCode(gUserProfile.postcode);
+  gUserProfile.lat = userLatLon[0];
+  gUserProfile.lon = userLatLon[1];
+
+  Map<BusinessContact, double> bizContactMap = getNearestBizContacts();
+
+  // if bizContactMap.length > 25, then limit to 25
+  var len = (bizContactMap.length > 10) ? 10 : bizContactMap.length;
+  var bizcontacts = bizContactMap.keys.toList();
+  int i = 0;
+  for (var keyT in bizcontacts) {
+    if (i >= len) {
+      break;
     }
 
-    List<double> userLatLon = getLatLonfromPostCode(gUserProfile.postcode);
-    gUserProfile.lat = userLatLon[0];
-    gUserProfile.lon = userLatLon[1];
+    List<int>? uids;
+    UserContact user = UserContact(id: 0, fName: '', fullName: '', mobile: '');
+    //include as recommendation only if the trade category matches
+    for (var j = 0; j < searchedCategories.length; j++) {
+      uids?.clear();
 
-    Map<BusinessContact, double> bizContactMap = getNearestBizContacts();
+      if (keyT.bizCategory!.toLowerCase().contains(searchedCategories[j])) {
+        uids = gBizCustomerMap[keyT.id];
 
-    // if bizContactMap.length > 25, then limit to 25
-    var len = (bizContactMap.length > 10) ? 10 : bizContactMap.length;
-    var bizcontacts = bizContactMap.keys.toList();
-    int i = 0;
-    for (var keyT in bizcontacts) {
-      if (i >= len) {
+        if (null != uids) {
+          for (var uid in uids) {
+            user = gAllUsers.where((element) => element.id == uid).first;
+          }
+        } else {
+          //assign a random user
+          //user = gAllUsers[i % gAllUsers.length];
+        }
+
+        ret.add(RecommendationModel(tradie: keyT, fof: user));
+        i++;
         break;
       }
-      //include as recommendation only if the trade category matches
-      for (var j = 0; j < searchedCategories.length; j++) {
-        if (keyT.bizCategory!.toLowerCase().contains(searchedCategories[j])) {
-          ret.add(RecommendationModel(
-              tradie: keyT,
-              recommendedBy: gPooledContacts[i % gPooledContacts.length]));
-          i++;
-          break;
-        }
-      }
+    }
+  }
+
+  return ret;
+}
+
+class RecommendationModel {
+  BusinessContact tradie;
+  UserContact? fof;
+  int level = 0;
+  List<UserContact>? hierarchy;
+
+  RecommendationModel(
+      {required this.tradie, this.fof, this.level = 0, this.hierarchy});
+}
+
+/*
+New recommendation algorithm
+
+*/
+
+class Node {
+  UserContact user;
+  List<UserContact> friends = [];
+
+  Node(this.user, this.friends);
+}
+
+class RecoAlgo {
+  final int maxRecommendations = 50;
+  final int maxLevel = 6;
+
+  List<UserContact> toExplore = <UserContact>[];
+  List<UserContact> explored = <UserContact>[];
+  List<RecommendationModel> retRecommendations = <RecommendationModel>[];
+
+  void getTrustedTradies(int level, Node node, String searchCategory) {
+    if (level > maxLevel) return;
+
+    //loop through friends
+    for (var friend in node.friends) {
+      if (explored.contains(friend)) return;
+
+      //add to exploration list
+      toExplore.add(friend);
+      explored.add(friend);
     }
 
-    return ret;
+    //loop through exploration list
+    //  get this friend's tradies matching the search category
+    //    if (found)
+    //      add to retRecommendations
+    //      add this friend to hierarchy
+    //    add this friend to explored list
+    //    remove from exploration list
+
+    //if (retRecommendations.length == maxRecommendations) return;
+    //else
+    //  loop through friends
+    //    get friends of friends
+    //      //getTrustedTradies
+    return;
   }
 }

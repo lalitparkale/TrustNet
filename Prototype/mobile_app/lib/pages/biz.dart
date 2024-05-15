@@ -35,6 +35,7 @@ class BizPage extends StatelessWidget {
         bizLineItem("Contact Mobile", cBizContact.bizContactMobile),
         bizLineItem("Business Phone", cBizContact.bizPhone),
         bizLineItem("Email", cBizContact.bizEmail),
+        bizLineItem("Postcode", cBizContact.postcode.toString()),
         bizLineItem("Address", cBizContact.headOfficeAddress),
         bizLineItem("ABN", cBizContact.bizABN),
         bizLineItem("Lincense", cBizContact.licenseNumber),

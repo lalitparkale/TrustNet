@@ -23,7 +23,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
   void initState() {
     super.initState();
 
-    cRecommendations = RecommendationModel.getRecommendations();
+    cRecommendations = getRecommendations();
   }
 
   late List<RecommendationModel> cRecommendations = [];
@@ -305,8 +305,7 @@ class RecommendationListView extends StatelessWidget {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                              recommendations[index].recommendedBy.fullName,
+                          child: Text(recommendations[index].fof!.fullName,
                               style: const TextStyle(
                                   fontSize: 11, fontWeight: FontWeight.normal)),
                         ),

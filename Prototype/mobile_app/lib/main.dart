@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pickeze/pages/profile.dart';
 import '../pages/home.dart';
 //import '../pages/login.dart';
@@ -28,11 +25,17 @@ class MyApp extends StatelessWidget {
     gUserProfile.postcode = 0;
 
     //gPooledBizContacts - read tradies data from csv file and populate global object
-    gPooledBizContacts.clear();
-    loadTradiesDb();
+    gAllBizContacts.clear();
+    loadDBAllTradies();
     //gPooledContacts - read pooled users data from csv file and populate global object
-    gPooledContacts.clear();
-    loadUsersDb();
+    gAllUsers.clear();
+    loadDBAllUsers();
+    //gFriendsMap - read friends data from csv file and populate global object
+    gFriendsMap.clear();
+    loadDBFriends();
+    //gUsedServicesMap - read used services data from csv file and populate global object
+    gUsedServicesMap.clear();
+    loadDBUsedServices();
     //read australian post codes from csv file and populate global object
     gAusPostCodes.clear();
     loadAustralianPostcodes();
@@ -46,12 +49,14 @@ class MyApp extends StatelessWidget {
     //Load all shared contacts from persistent file
     UserContact.loadSharedContactsFromFile().then((value) {
       gSharedContacts = value;
+      gUniqueUserID = gSharedContacts.length + 1;
       incrementInitCounter();
     });
 
     //Load all shared Business contacts from persistent file
     BusinessContact.loadSharedBizContactsFromFile().then((value) {
       gSharedBizContacts = value;
+      gUniqueBizID = gSharedBizContacts.length + 1;
       incrementInitCounter();
     });
 
@@ -71,148 +76,6 @@ class MyApp extends StatelessWidget {
     //   WidgetsFlutterBinding.ensureInitialized();
     //   mapsImplementation.initializeWithRenderer(AndroidMapRenderer.latest);
     // }
-  }
-
-  Future<String> loadStringAsset(String path) async {
-    return await rootBundle.loadString(path);
-  }
-
-  void getLatLonforPooledContacts() {
-    for (var i = 0; i < gPooledContacts.length; i++) {
-      List<double> contactLatLon =
-          getLatLonfromPostCode(gPooledContacts[i].postcode);
-      gPooledContacts[i].lat = contactLatLon[0];
-      gPooledContacts[i].lon = contactLatLon[1];
-    }
-  }
-
-  void getLatLonforBizContacts() {
-    for (var i = 0; i < gPooledBizContacts.length; i++) {
-      List<double> contactLatLon =
-          getLatLonfromPostCode(gPooledBizContacts[i].postcode);
-      gPooledBizContacts[i].lat = contactLatLon[0];
-      gPooledBizContacts[i].lon = contactLatLon[1];
-    }
-  }
-
-  //create function to read australian postcodes from csv file
-  void loadAustralianPostcodes() async {
-    List<String> csvLines = [];
-    List<String> csvLineCells = [];
-
-    loadStringAsset('assets/db/australian_postcodes.csv').then((value) {
-      csvLines = value.split("\n");
-      //print('From loadasset invocation : $csvLines');
-
-      if (csvLines.length > 1) {
-        //loop through csvLines. Skip the first line as it contains headers
-        for (var i = 1; i < csvLines.length; i++) {
-          csvLineCells = csvLines[i].split(",");
-          //print(csvLineCells[1]);
-
-          if (csvLineCells.length > 1) {
-            //create Auspostcode object
-            AusPostcode ausPostcode = AusPostcode(
-              id: int.parse(csvLineCells[0]),
-              postcode: int.parse(csvLineCells[1]),
-              locality: csvLineCells[2],
-              state: csvLineCells[3],
-              longitude: double.parse(csvLineCells[4]),
-              latitude: double.parse(csvLineCells[5]),
-            );
-
-            gAusPostCodes.add(ausPostcode);
-          }
-        }
-      }
-
-      getLatLonforPooledContacts();
-      getLatLonforBizContacts();
-    }).onError((error, stackTrace) {
-      //print(error);
-    });
-
-    incrementInitCounter();
-  }
-
-  //create function to read tradies data from csv file
-  void loadTradiesDb() async {
-    //read data from csv file
-
-    List<String> csvLines = [];
-    List<String> csvLineCells = [];
-
-    loadStringAsset('assets/db/db-tradies.csv').then((value) {
-      csvLines = value.split("\n");
-      //print('From loadasset invocation : $csvLines');
-
-      //loop through csvLines. Skip the first line as it contains headers
-      for (var i = 1; i < csvLines.length; i++) {
-        csvLineCells = csvLines[i].split(",");
-        //print(csvLineCells[1]);
-
-        if (csvLineCells.length > 1) {
-          //create BusinessContact object
-          BusinessContact bizContact = BusinessContact(
-            //id: int.parse(csvLineCells[0]),
-            bizName: csvLineCells[1],
-            bizPhone: csvLineCells[2],
-            bizCategory: csvLineCells[3],
-            //subcategory [4]
-            postcode: int.parse(csvLineCells[5]),
-            headOfficeAddress: csvLineCells[6],
-            bizEmail: csvLineCells[7],
-            //hours: csvLineCells[8],
-            bizABN: csvLineCells[9],
-            licenseNumber: csvLineCells[10],
-            servicesTags: csvLineCells[11],
-          );
-
-          gPooledBizContacts.add(bizContact);
-        }
-      }
-    }).onError((error, stackTrace) {
-      //print(error);
-    });
-
-    incrementInitCounter();
-  }
-
-  //create function to read tradies data from csv file
-  void loadUsersDb() async {
-    //read data from csv file
-
-    List<String> csvLines = [];
-    List<String> csvLineCells = [];
-
-    loadStringAsset('assets/db/db-users.csv').then((value) {
-      csvLines = value.split("\n");
-      //print('From loadasset invocation : $csvLines');
-
-      //loop through csvLines. Skip the first line as it contains headers
-      for (var i = 1; i < csvLines.length; i++) {
-        csvLineCells = csvLines[i].split(",");
-        //print(csvLineCells[1]);
-        if (csvLineCells.length > 1) {
-          //create BusinessContact object
-          UserContact userContact = UserContact(
-            //id: int.parse(csvLineCells[0]),
-            fName: csvLineCells[1],
-            fullName: csvLineCells[2],
-            mobile: csvLineCells[3],
-            //email: int.parse(csvLineCells[4]),
-            postcode: int.parse(csvLineCells[5]),
-            //gender: int.parse(csvLineCells[6]),
-          );
-
-          gPooledContacts.add(userContact);
-        }
-      }
-    }).onError((error, stackTrace) {
-      //print(error);
-    });
-
-    incrementInitCounter();
   }
 
   // This widget is the root of your application.

@@ -2,6 +2,7 @@ library globals;
 
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'model/profile_model.dart';
 
@@ -18,6 +19,8 @@ void incrementInitCounter() async {
 //async function that waits for all async init activities to complete
 Future<void> waitForInit() async {
   while (gInitCounter < initActivities) {
+    //TODO: improve the wait calculation logic so that it has small
+    // wait time but could wait for longer if need be when DB grows
     await Future.delayed(const Duration(milliseconds: 200));
   }
 }
@@ -36,18 +39,40 @@ class SearchModel {
 //create a static variable for userprofile
 UserProfile gUserProfile = UserProfile(isVerified: 0);
 
+/*
+Friends
+*/
 //list of contacts shared by this user
 List<UserContact> gSharedContacts = List<UserContact>.empty(growable: true);
 
+int gUniqueUserID = 0;
+int getUniqueUserID() {
+  gUniqueUserID++;
+  return gUniqueUserID;
+}
+
+Map<int, List<int>> gFriendsMap = <int, List<int>>{};
+Map<int, List<int>> gUsedServicesMap = <int, List<int>>{};
+/*
+Businesses
+*/
 //list of business contacts shared by this user
 List<BusinessContact> gSharedBizContacts =
     List<BusinessContact>.empty(growable: true);
 
+int gUniqueBizID = 0;
+int getUniqueBizID() {
+  gUniqueBizID++;
+  return gUniqueBizID;
+}
+
+Map<int, List<int>> gBizCustomerMap = <int, List<int>>{};
+
 //list of contacts across the platform pooled together
-List<UserContact> gPooledContacts = List<UserContact>.empty(growable: true);
+List<UserContact> gAllUsers = List<UserContact>.empty(growable: true);
 
 //list of business contacts  across the platform pooled together
-List<BusinessContact> gPooledBizContacts =
+List<BusinessContact> gAllBizContacts =
     List<BusinessContact>.empty(growable: true);
 
 //list of business contacts  across the platform pooled together
@@ -80,13 +105,13 @@ List<String> gCategories = [
   'blinds',
   'curtains',
   'shutters',
-  'furniture',
   'appliances',
   'aircon',
   'pest',
   'removalist',
   'mover',
   'mechanic',
+  'decking',
 ];
 
 /////////////////////////////////////////////////
@@ -116,11 +141,71 @@ double getDistanceFromLatLonInKm(
 double deg2rad(deg) {
   return deg * (pi / 180);
 }
+
+void getLatLonforPooledContacts() {
+  for (var i = 0; i < gAllUsers.length; i++) {
+    List<double> contactLatLon = getLatLonfromPostCode(gAllUsers[i].postcode);
+    gAllUsers[i].lat = contactLatLon[0];
+    gAllUsers[i].lon = contactLatLon[1];
+  }
+}
+
+void getLatLonforBizContacts() {
+  for (var i = 0; i < gAllBizContacts.length; i++) {
+    List<double> contactLatLon =
+        getLatLonfromPostCode(gAllBizContacts[i].postcode);
+    gAllBizContacts[i].lat = contactLatLon[0];
+    gAllBizContacts[i].lon = contactLatLon[1];
+  }
+}
+
+//create function to read australian postcodes from csv file
+void loadAustralianPostcodes() async {
+  List<String> csvLines = [];
+  List<String> csvLineCells = [];
+
+  loadStringAsset('assets/db/australian_postcodes.csv').then((value) {
+    csvLines = value.split("\n");
+    //print('From loadasset invocation : $csvLines');
+
+    if (csvLines.length > 1) {
+      //loop through csvLines. Skip the first line as it contains headers
+      for (var i = 1; i < csvLines.length; i++) {
+        csvLineCells = csvLines[i].split(",");
+        //print(csvLineCells[1]);
+
+        if (csvLineCells.length > 1) {
+          //create Auspostcode object
+          AusPostcode ausPostcode = AusPostcode(
+            id: int.parse(csvLineCells[0]),
+            postcode: int.parse(csvLineCells[1]),
+            locality: csvLineCells[2],
+            state: csvLineCells[3],
+            longitude: double.parse(csvLineCells[4]),
+            latitude: double.parse(csvLineCells[5]),
+          );
+
+          gAusPostCodes.add(ausPostcode);
+        }
+      }
+    }
+
+    getLatLonforPooledContacts();
+    getLatLonforBizContacts();
+  }).onError((error, stackTrace) {
+    //print(error);
+  });
+
+  incrementInitCounter();
+}
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
 ////////////// Local Persistent Storage//////////
+Future<String> loadStringAsset(String path) async {
+  return await rootBundle.loadString(path);
+}
 
 Future<String> get getLocalAppDocPath async {
   final directory = await getApplicationDocumentsDirectory();
@@ -155,6 +240,169 @@ void saveSharedContacts() {
 void saveSharedBizContacts() {
   //save user profile to db
   BusinessContact.saveSharedBizContactsToFile(gSharedBizContacts);
+}
+
+//create function to read friends data from csv file
+void loadDBFriends() async {
+  //read data from csv file
+
+  List<String> csvLines = [];
+  List<String> csvLineCells = [];
+  Map<int, List<int>> fMap = {};
+
+  loadStringAsset('assets/db/db-friends.csv').then((value) {
+    csvLines = value.split("\n");
+    //print('From loadasset invocation : $csvLines');
+
+    //loop through csvLines. Skip the first line as it contains headers
+    for (var i = 1; i < csvLines.length; i++) {
+      csvLineCells = csvLines[i].split(",");
+      //print(csvLineCells[1]);
+
+      if (csvLineCells.length > 1) {
+        int uid = int.parse(csvLineCells[0]);
+        int fid = int.parse(csvLineCells[1]);
+
+        //check if uid exists in friendsMap
+        if (fMap.containsKey(uid)) {
+          fMap[uid]?.add(fid);
+        } else {
+          fMap[uid] = [fid];
+        }
+      }
+    }
+  }).onError((error, stackTrace) {
+    print(error);
+  });
+
+  gFriendsMap = fMap;
+  incrementInitCounter();
+}
+
+//create function to read biz services used by users data from csv file
+void loadDBUsedServices() async {
+  //read data from csv file
+
+  List<String> csvLines = [];
+  List<String> csvLineCells = [];
+  Map<int, List<int>> userConsumedMap = {};
+  Map<int, List<int>> bizCustomerMap = {};
+
+  loadStringAsset('assets/db/db-usedservices.csv').then((value) {
+    csvLines = value.split("\n");
+    //print('From loadasset invocation : $csvLines');
+
+    //loop through csvLines. Skip the first line as it contains headers
+    for (var i = 1; i < csvLines.length; i++) {
+      csvLineCells = csvLines[i].split(",");
+      //print(csvLineCells[1]);
+
+      if (csvLineCells.length > 1) {
+        int uid = int.parse(csvLineCells[0]);
+        int bid = int.parse(csvLineCells[1]);
+
+        //check if uid exists in userConsumedMap
+        if (userConsumedMap.containsKey(uid)) {
+          userConsumedMap[uid]?.add(bid);
+        } else {
+          userConsumedMap[uid] = [bid];
+        }
+
+        //check if bid exists in bizCustomerMap
+        if (bizCustomerMap.containsKey(bid)) {
+          bizCustomerMap[bid]?.add(uid);
+        } else {
+          bizCustomerMap[bid] = [uid];
+        }
+      }
+    }
+  }).onError((error, stackTrace) {
+    print(error);
+  });
+
+  gUsedServicesMap = userConsumedMap;
+  gBizCustomerMap = bizCustomerMap;
+  incrementInitCounter();
+}
+
+//create function to read tradies data from csv file
+void loadDBAllTradies() async {
+  //read data from csv file
+
+  List<String> csvLines = [];
+  List<String> csvLineCells = [];
+
+  loadStringAsset('assets/db/db-alltradies.csv').then((value) {
+    csvLines = value.split("\n");
+    //print('From loadasset invocation : $csvLines');
+
+    //loop through csvLines. Skip the first line as it contains headers
+    for (var i = 1; i < csvLines.length; i++) {
+      csvLineCells = csvLines[i].split(",");
+      //print(csvLineCells[1]);
+
+      if (csvLineCells.length > 1) {
+        //create BusinessContact object
+        BusinessContact bizContact = BusinessContact(
+          id: int.parse(csvLineCells[0]),
+          bizName: csvLineCells[1],
+          bizPhone: csvLineCells[2],
+          bizCategory: csvLineCells[3],
+          //subcategory [4]
+          postcode: int.parse(csvLineCells[5]),
+          headOfficeAddress: csvLineCells[6],
+          bizEmail: csvLineCells[7],
+          //hours: csvLineCells[8],
+          bizABN: csvLineCells[9],
+          licenseNumber: csvLineCells[10],
+          servicesTags: csvLineCells[11],
+        );
+
+        gAllBizContacts.add(bizContact);
+      }
+    }
+  }).onError((error, stackTrace) {
+    //print(error);
+  });
+
+  incrementInitCounter();
+}
+
+//create function to read all users data from csv file
+void loadDBAllUsers() async {
+  //read data from csv file
+
+  List<String> csvLines = [];
+  List<String> csvLineCells = [];
+
+  loadStringAsset('assets/db/db-allusers.csv').then((value) {
+    csvLines = value.split("\n");
+    //print('From loadasset invocation : $csvLines');
+
+    //loop through csvLines. Skip the first line as it contains headers
+    for (var i = 1; i < csvLines.length; i++) {
+      csvLineCells = csvLines[i].split(",");
+      //print(csvLineCells[1]);
+      if (csvLineCells.length > 1) {
+        //create BusinessContact object
+        UserContact userContact = UserContact(
+          id: int.parse(csvLineCells[0]),
+          fName: csvLineCells[1],
+          fullName: csvLineCells[2],
+          mobile: csvLineCells[3],
+          //email: int.parse(csvLineCells[4]),
+          postcode: int.parse(csvLineCells[5]),
+          //gender: int.parse(csvLineCells[6]),
+        );
+
+        gAllUsers.add(userContact);
+      }
+    }
+  }).onError((error, stackTrace) {
+    //print(error);
+  });
+
+  incrementInitCounter();
 }
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

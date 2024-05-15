@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pickeze/globals.dart';
-import '../pages/login.dart';
 import '../pages/screen_lib.dart';
 import '../globals.dart' as globals;
 import '../model/profile_model.dart';
@@ -168,6 +167,7 @@ class FormAddBizContactState extends State<FormAddBizContact> {
   @override
   Widget build(BuildContext context) {
     BusinessContact newBizContact = BusinessContact(
+      id: 0,
       bizName: '',
       bizContactName: '',
       bizContactMobile: '',
@@ -265,6 +265,7 @@ class FormAddBizContactState extends State<FormAddBizContact> {
                     formKeyAddContact.currentState!.save();
                     if (formKeyAddContact.currentState!.validate()) {
                       //add contact to the list
+                      newBizContact.id = getUniqueBizID();
                       globals.gSharedBizContacts.add(newBizContact);
                       saveSharedBizContacts();
 
@@ -420,7 +421,8 @@ class FormAddContactState extends State<FormAddContact> {
 
   @override
   Widget build(BuildContext context) {
-    UserContact newContact = UserContact(fName: '', fullName: '', mobile: '');
+    UserContact newContact =
+        UserContact(id: 0, fName: '', fullName: '', mobile: '');
 
     return Form(
       key: formKeyAddContact,
@@ -487,6 +489,7 @@ class FormAddContactState extends State<FormAddContact> {
                     formKeyAddContact.currentState!.save();
                     if (formKeyAddContact.currentState!.validate()) {
                       //add contact to the list
+                      newContact.id = getUniqueUserID();
                       globals.gSharedContacts.add(newContact);
                       saveSharedContacts();
 
@@ -550,10 +553,7 @@ class BasicProfileCard extends StatelessWidget {
             color: Colors.indigo,
             shadows: [Shadow(color: Colors.blue, blurRadius: 10)],
           ),
-          // profileLineItem('Name', globals.gUserProfile.name),
-          // profileLineItem('Mobile', globals.gUserProfile.mobile),
-          // profileLineItem('Postcode', globals.gUserProfile.postcode.toString()),
-          // //profileLineItem('Email', globals.gUserProfile.email),
+
           FormUserProfile(),
 
           //SizedBox(height: 10),
@@ -570,61 +570,6 @@ class BasicProfileCard extends StatelessWidget {
           //     child: const Text('Log out')),
         ],
       ),
-    );
-  }
-
-  Widget profileLineItem(String cellTitle, String? cellValue) {
-    return Row(
-      children: [
-        if (cellValue != null)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
-                style: const TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.normal),
-                controller: TextEditingController()..text = cellValue,
-                decoration: InputDecoration(
-                  labelText: cellTitle,
-                  //helperText: cellTitle,
-                  labelStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.indigo,
-                    ),
-                  ),
-                ),
-                onChanged: (value) {},
-                onSubmitted: (value) {
-                  //save user profile to db
-                  if (cellTitle == 'Name') {
-                    gUserProfile.name = value;
-                  } else if (cellTitle == 'Email') {
-                    gUserProfile.email = value;
-                  } else if (cellTitle == 'Postcode') {
-                    gUserProfile.postcode = int.parse(value);
-                  } else if (cellTitle == 'Mobile') {
-                    gUserProfile.mobile = value;
-                  }
-                  saveUserProfile();
-                },
-              ),
-            ),
-          )
-        else
-          Expanded(
-            child: Text('No $cellTitle Provided',
-                style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey)),
-          ),
-      ],
     );
   }
 }
