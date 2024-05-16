@@ -91,15 +91,16 @@ class SharedBizContactsTile extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: DataTable(
-                  sortColumnIndex: 0,
+                  sortColumnIndex: 1,
                   sortAscending: true,
-                  //showCheckboxColumn: true,
+                  showCheckboxColumn: false,
                   headingTextStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                     //color: Colors.white,
                   ),
                   columns: const [
+                    DataColumn(label: Text('Feedback')),
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Mobile')),
                     DataColumn(label: Text('Category')),
@@ -109,6 +110,17 @@ class SharedBizContactsTile extends StatelessWidget {
                     for (var contact in globals.gSharedBizContacts)
                       DataRow(
                         cells: [
+                          DataCell(IconButton(
+                            icon: const Icon(Icons.feedback),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        FeedbackPage(biz: contact)),
+                              );
+                            },
+                          )),
                           DataCell(Text(contact.bizName,
                               style: const TextStyle(
                                   fontSize: 12,
@@ -361,7 +373,7 @@ class SharedContactsTile extends StatelessWidget {
                 child: DataTable(
                   sortColumnIndex: 0,
                   sortAscending: true,
-                  //showCheckboxColumn: true,
+                  showCheckboxColumn: false,
                   headingTextStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -669,23 +681,24 @@ class FormUserProfileState extends State<FormUserProfile> {
                     // the form is invalid.
                     formKeyProfile.currentState!.save();
                     if (formKeyProfile.currentState!.validate()) {
+                      findUIDforProfile(gUserProfile.mobile);
                       //save user profile to db
                       saveUserProfile();
-                    }
 
-                    //show user message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text(
-                          'Profile saved',
+                      //show user message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'Profile saved',
+                          ),
+                          backgroundColor: Colors.indigoAccent.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          showCloseIcon: true,
                         ),
-                        backgroundColor: Colors.blueAccent.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        showCloseIcon: true,
-                      ),
-                    );
+                      );
+                    }
                   },
                   child: const Text(
                     'Save',
@@ -697,6 +710,284 @@ class FormUserProfileState extends State<FormUserProfile> {
           ),
         ],
       ),
+    );
+  }
+}
+
+//Feedback display page
+class FeedbackPage extends StatelessWidget {
+  const FeedbackPage({super.key, required this.biz});
+
+  final BusinessContact biz;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Feedback for Business'),
+      ),
+      body: ListView(children: [
+        Container(
+          height: 50,
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.indigoAccent.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            biz.bizName,
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 0, 17, 221)),
+          ),
+        ),
+        FormFeedback(
+          bizContact: biz,
+        ),
+      ]),
+    );
+  }
+}
+
+//stateful form widget to get and display feedback
+class FormFeedback extends StatefulWidget {
+  FormFeedback({super.key, required this.bizContact});
+  BusinessContact bizContact;
+
+  @override
+  State<FormFeedback> createState() => FormFeedbackState();
+} //FormFeedback
+
+class FormFeedbackState extends State<FormFeedback> {
+  final GlobalKey<FormState> formKeyFeedback = GlobalKey<FormState>();
+
+  //init function
+  @override
+  void initState() {
+    //if feedback is null, create a new feedback object
+    widget.bizContact.feedback ??= BizFeedback(
+      id: 1,
+      comments: '',
+      workQuality: FeedbackType.na,
+      workPrice: FeedbackType.na,
+      workProfessionalism: FeedbackType.na,
+      workTimeCommitment: FeedbackType.na,
+      workCommunication: FeedbackType.na,
+      workTransparency: FeedbackType.na,
+      workType: '',
+      //workDate: ,
+      //feedbackDate: ,
+    );
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKeyFeedback,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            TextFormField(
+              controller: TextEditingController()
+                ..text = widget.bizContact.feedback!.comments!,
+              onSaved: (newValue) {
+                widget.bizContact.feedback!.comments = newValue!;
+              },
+              keyboardType: TextInputType.multiline,
+              style: const TextStyle(fontSize: 12),
+              maxLines: 3,
+              decoration: const InputDecoration(
+                hintText: 'Feedback that will help your friends...',
+                hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic),
+                labelText: 'Comments',
+              ),
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your comments';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: TextEditingController()
+                ..text = widget.bizContact.feedback!.workType!,
+              onSaved: (newValue) {
+                widget.bizContact.feedback!.workType = newValue!;
+              },
+              style: const TextStyle(fontSize: 12),
+              decoration: const InputDecoration(
+                hintText: 'e.g. fixed plumbing, indoor tilings, etc.',
+                hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic),
+                labelText: 'Type of work done',
+              ),
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter type of work done';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: TextEditingController()
+                ..text = (widget.bizContact.feedback!.workDate != null)
+                    ? widget.bizContact.feedback!.workDate.toString()
+                    : '',
+              onSaved: (newValue) {
+                (newValue != '')
+                    ? widget.bizContact.feedback!.workDate =
+                        newValue as DateTime?
+                    : null;
+              },
+              inputFormatters: [
+                FilteringTextInputFormatter(RegExp('[0-9]'), allow: true)
+              ],
+              style: const TextStyle(fontSize: 12),
+              decoration: const InputDecoration(
+                hintText: 'e.g. 04/2024 etc.',
+                hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic),
+                labelText: 'Month and year of work done',
+              ),
+              validator: (String? value) {
+                if (value == null || value.isEmpty || value == 'null') {
+                  return 'Please enter date of work done';
+                }
+                return null;
+              },
+            ),
+            FeedbackLineItem(fb: widget.bizContact.feedback!, label: 'Quality'),
+            FeedbackLineItem(fb: widget.bizContact.feedback!, label: 'Price'),
+            FeedbackLineItem(
+                fb: widget.bizContact.feedback!, label: 'Professionalism'),
+            FeedbackLineItem(
+                fb: widget.bizContact.feedback!, label: 'Commitment'),
+            FeedbackLineItem(
+                fb: widget.bizContact.feedback!, label: 'Communication'),
+            FeedbackLineItem(
+                fb: widget.bizContact.feedback!, label: 'Transparency'),
+            Text('Feedback Date: ${widget.bizContact.feedback!.feedbackDate}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigoAccent.withOpacity(0.5),
+                    ),
+                    onPressed: () {
+                      // Validate will return true if the form is valid, or false if
+                      // the form is invalid.
+                      formKeyFeedback.currentState!.save();
+                      if (formKeyFeedback.currentState!.validate()) {
+                        //save user profile to db
+                        //saveUserProfile();
+                      }
+
+                      //show user message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'Feedback saved',
+                          ),
+                          backgroundColor: Colors.blueAccent.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          showCloseIcon: true,
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(color: Colors.indigo),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FeedbackLineItem extends StatefulWidget {
+  const FeedbackLineItem({
+    super.key,
+    required this.fb,
+    required this.label,
+  });
+
+  final BizFeedback fb;
+  final String label;
+
+  @override
+  State<FeedbackLineItem> createState() => _FeedbackLineItemState();
+}
+
+class _FeedbackLineItemState extends State<FeedbackLineItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(
+            width: 100,
+            child: Text(
+              widget.label,
+              textAlign: TextAlign.right,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+              ),
+            )),
+        IconButton(
+          icon: Icon(Icons.favorite,
+              color: (widget.fb.workQuality == FeedbackType.delighted)
+                  ? Colors.green
+                  : Colors.grey),
+          onPressed: () {
+            widget.fb.workQuality = FeedbackType.delighted;
+            setState(() {});
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.thumb_up,
+              color: (widget.fb.workQuality == FeedbackType.good)
+                  ? Colors.yellow
+                  : Colors.grey),
+          onPressed: () {
+            widget.fb.workQuality = FeedbackType.good;
+            setState(() {});
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.thumb_down,
+              color: (widget.fb.workQuality == FeedbackType.bad)
+                  ? Colors.red
+                  : Colors.grey),
+          onPressed: () {
+            widget.fb.workQuality = FeedbackType.bad;
+            setState(() {});
+          },
+        ),
+      ],
     );
   }
 }

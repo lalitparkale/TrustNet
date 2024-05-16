@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     getCurrentPosition().then((value) {
       setState(() {
+        //int level = getLevel(1, 37, gFriendsMap[1]!, 0);
+
         //rebuild the widget
         print('initState() called');
         if ((gUserProfile.name == 'Awesome') ||

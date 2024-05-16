@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pickeze/model/profile_model.dart';
 
-//stateless page
+//Busines Contact display page
 class BizPage extends StatelessWidget {
   const BizPage({super.key, required this.cBizContact});
 
@@ -124,8 +124,10 @@ class FriendContactPage extends StatelessWidget {
                 color: Color.fromARGB(255, 0, 17, 221)),
           ),
         ),
-        friendLineItem("Contact Mobile", cFriendContact.mobile),
-        friendLineItem("Contact Postcode", cFriendContact.postcode.toString()),
+        // friendLineItem("Contact Mobile", cFriendContact.mobile),
+        // friendLineItem("Contact Postcode", cFriendContact.postcode.toString()),
+        friendLineItem("Contact Mobile", '+***********'),
+        friendLineItem("Contact Postcode", '****'),
       ]),
     );
   }

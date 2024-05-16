@@ -21,7 +21,7 @@ Future<void> waitForInit() async {
   while (gInitCounter < initActivities) {
     //TODO: improve the wait calculation logic so that it has small
     // wait time but could wait for longer if need be when DB grows
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 300));
   }
 }
 
@@ -111,8 +111,12 @@ List<String> gCategories = [
   'pest control',
   'removalist',
   'mover',
-  'mechanic',
+  'car mechanic',
   'decking',
+  'pool',
+  'pergola',
+  'Gardening',
+  'Lawn Mowing',
 ];
 
 /////////////////////////////////////////////////
@@ -226,6 +230,15 @@ Future<File> get getFileSharedContacts async {
 Future<File> get getFileSharedBizContacts async {
   final path = await getLocalAppDocPath;
   return File('$path/sharedbizcontacts.json');
+}
+
+void findUIDforProfile(String mobile) {
+  for (var i = 0; i < gAllUsers.length; i++) {
+    if (gAllUsers[i].mobile == mobile) {
+      gUserProfile.id = gAllUsers[i].id;
+      break;
+    }
+  }
 }
 
 void saveUserProfile() {
@@ -409,4 +422,83 @@ void loadDBAllUsers() async {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
+//Map<int, List<int>> gFriendsMap = <int, List<int>>{};
+
+int getLevel(
+  int uid,
+  int fid,
+) {
+  int level = 0;
+  List<int> friends = gFriendsMap[uid]!;
+  if (uid == fid) return 0;
+
+  if (friends.contains(fid)) {
+    level++;
+  } else {
+    if (friends.isNotEmpty) {
+      level++;
+      Set<int> friends3 = <int>{};
+      for (var i = 0; i < friends.length; i++) {
+        if (uid == friends[i]) {
+          continue;
+        }
+        List<int> friends2 = gFriendsMap[friends[i]]!;
+
+        if (friends2.contains(fid)) {
+          return ++level;
+        }
+
+        friends2.remove(uid);
+        //add only unique friends to queue
+        for (var j = 0; j < friends2.length; j++) {
+          if (!friends3.contains(friends2[j])) {
+            friends3.add(friends2[j]);
+          }
+        }
+      }
+
+      if (friends3.isNotEmpty) {
+        level++;
+        Set<int> friends5 = <int>{};
+        for (var j = 0; j < friends3.length; j++) {
+          List<int> friends4 = gFriendsMap[friends3.elementAt(j)]!;
+
+          if (friends4.contains(fid)) {
+            return ++level;
+          }
+
+          friends4.remove(uid);
+          //add only unique friends to queue
+          for (var j = 0; j < friends4.length; j++) {
+            if (!friends5.contains(friends4[j])) {
+              friends5.add(friends4[j]);
+            }
+          }
+        }
+
+        if (friends5.isNotEmpty) {
+          level++;
+          Set<int> friends7 = <int>{};
+          for (var j = 0; j < friends5.length; j++) {
+            List<int> friends6 = gFriendsMap[friends5.elementAt(j)]!;
+
+            if (friends6.contains(fid)) {
+              return ++level;
+            }
+            friends6.remove(uid);
+            //add only unique friends to queue
+            for (var j = 0; j < friends6.length; j++) {
+              if (!friends7.contains(friends6[j])) {
+                friends7.add(friends6[j]);
+              }
+            }
+          }
+        }
+      }
+    } else {
+      level = 0;
+    }
+  }
+  return level;
+}
 //LocationService globalLocationService = LocationService();

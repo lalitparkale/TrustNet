@@ -219,7 +219,7 @@ class RecommendationListView extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       itemBuilder: (context, index) {
         return Container(
-          height: 110,
+          height: 128,
           //width: 100,
           margin:
               const EdgeInsets.only(top: 12, bottom: 12, left: 10, right: 10),
@@ -276,16 +276,50 @@ class RecommendationListView extends StatelessWidget {
                       IconButton(
                         icon: const Icon(
                           Icons.phone,
+                          color: Colors.indigo,
                         ),
                         iconSize: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          //show user message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                'Calling Feature coming soon!',
+                              ),
+                              backgroundColor:
+                                  Colors.indigoAccent.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              showCloseIcon: true,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
                       ),
                       IconButton(
                         icon: const Icon(
                           Icons.message,
+                          color: Colors.indigo,
                         ),
                         iconSize: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          //show user message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                'Messaging Feature coming soon!',
+                              ),
+                              backgroundColor:
+                                  Colors.indigoAccent.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              showCloseIcon: true,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
                       ),
                     ]),
                     const Row(children: [
@@ -313,23 +347,40 @@ class RecommendationListView extends StatelessWidget {
                                 left: 10,
                                 top: 10,
                               ),
-                              child: InkWell(
-                                child: Text(
-                                  fof.fullName,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.indigo),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FriendContactPage(
-                                            cFriendContact: fof)),
-                                  );
-                                },
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    child: Text(
+                                      fof.fullName,
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.indigo),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                FriendContactPage(
+                                                    cFriendContact: fof)),
+                                      );
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: CircleAvatar(
+                                        maxRadius: 10,
+                                        child: Text(
+                                            getLevel(gUserProfile.id, fof.id)
+                                                .toString(),
+                                            style: const TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black))),
+                                  ),
+                                ],
                               ),
                             ),
                         ],

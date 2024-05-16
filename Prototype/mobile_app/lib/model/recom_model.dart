@@ -54,7 +54,7 @@ List<RecommendationModel> getRecommendations() {
   Map<BusinessContact, double> bizContactMap = getNearestBizContacts();
 
   // if bizContactMap.length > 25, then limit to 25
-  var len = (bizContactMap.length > 10) ? 10 : bizContactMap.length;
+  var len = (bizContactMap.length > 20) ? 20 : bizContactMap.length;
   var bizcontacts = bizContactMap.keys.toList();
   int i = 0;
   for (var keyT in bizcontacts) {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:pickeze/globals.dart';
 
 class UserProfile {
+  int id = 0;
   late String name = '';
   late String email = '';
   String mobile = '';
@@ -16,7 +17,8 @@ class UserProfile {
   UserProfile({required this.isVerified});
 
   UserProfile.fromJson(Map<String, dynamic> json)
-      : name = json['name'] as String,
+      : id = json['id'] as int,
+        name = json['name'] as String,
         email = json['email'] as String,
         mobile = json['mobile'] as String,
         postcode = json['postcode'] as int,
@@ -25,6 +27,7 @@ class UserProfile {
         isVerified = json['isVerified'] as int;
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'name': name,
         'mobile': mobile,
         'email': email,
@@ -141,6 +144,63 @@ class UserContact {
   }
 }
 
+enum FeedbackType { na, bad, good, delighted }
+
+class BizFeedback {
+  int id = 0;
+  String? comments;
+  String? workType;
+  FeedbackType workQuality;
+  FeedbackType workPrice;
+  FeedbackType workProfessionalism;
+  FeedbackType workTimeCommitment;
+  FeedbackType workCommunication;
+  FeedbackType workTransparency;
+  DateTime? workDate;
+  DateTime? feedbackDate;
+
+  BizFeedback({
+    required this.id,
+    this.comments,
+    this.workType,
+    this.workQuality = FeedbackType.na,
+    this.workPrice = FeedbackType.na,
+    this.workProfessionalism = FeedbackType.na,
+    this.workTimeCommitment = FeedbackType.na,
+    this.workCommunication = FeedbackType.na,
+    this.workTransparency = FeedbackType.na,
+    this.workDate,
+    this.feedbackDate,
+  });
+
+  BizFeedback.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as int,
+        comments = json['comments'] as String,
+        workType = json['workType'] as String,
+        workQuality = json['workQuality'] as FeedbackType,
+        workPrice = json['workPrice'] as FeedbackType,
+        workProfessionalism = json['workProfessionalism'] as FeedbackType,
+        workTimeCommitment = json['workTimeCommitment'] as FeedbackType,
+        workCommunication = json['workCommunication'] as FeedbackType,
+        workTransparency = json['workTransparency'] as FeedbackType,
+        workDate = json['workDate'] as DateTime,
+        feedbackDate = json['feedbackDate'] as DateTime;
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'comments': comments,
+        'workType': workType,
+        'workQuality': workQuality,
+        'workPrice': workPrice,
+        'workProfessionalism': workProfessionalism,
+        'workTimeCommitment': workTimeCommitment,
+        'workCommunication': workCommunication,
+        'workTransparency': workTransparency,
+        'workDate': workDate,
+        'feedbackDate': feedbackDate,
+      };
+}
+
 class BusinessContact {
   int id;
   late String? headOfficeAddress;
@@ -156,6 +216,7 @@ class BusinessContact {
   late String? bizCategory;
   double lat = 0;
   double lon = 0;
+  BizFeedback? feedback;
 
   BusinessContact({
     required this.id,
@@ -170,6 +231,7 @@ class BusinessContact {
     this.postcode = 0,
     this.servicesTags,
     this.bizCategory,
+    this.feedback,
   });
 
   BusinessContact.fromJson(Map<String, dynamic> json)
@@ -187,6 +249,7 @@ class BusinessContact {
         bizCategory = json['bizCategory'] as String,
         lat = json['lat'] as double,
         lon = json['lon'] as double;
+  //feedback = json['feedback'] as BizFeedback;
 
   Map<String, dynamic> toJson() => {
         'id': id,
