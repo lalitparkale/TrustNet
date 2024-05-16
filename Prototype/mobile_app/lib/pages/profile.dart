@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pickeze/globals.dart';
 import '../pages/screen_lib.dart';
 import '../globals.dart' as globals;
@@ -666,6 +667,20 @@ class FormUserProfileState extends State<FormUserProfile> {
                       //save user profile to db
                       saveUserProfile();
                     }
+
+                    //show user message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text(
+                          'Profile saved',
+                        ),
+                        backgroundColor: Colors.blueAccent.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        showCloseIcon: true,
+                      ),
+                    );
                   },
                   child: const Text('Save'),
                 ),

@@ -346,16 +346,17 @@ void loadDBAllTradies() async {
         BusinessContact bizContact = BusinessContact(
           id: int.parse(csvLineCells[0]),
           bizName: csvLineCells[1],
-          bizPhone: csvLineCells[2],
-          bizCategory: csvLineCells[3],
-          //subcategory [4]
-          postcode: int.parse(csvLineCells[5]),
-          headOfficeAddress: csvLineCells[6],
-          bizEmail: csvLineCells[7],
-          //hours: csvLineCells[8],
-          bizABN: csvLineCells[9],
-          licenseNumber: csvLineCells[10],
-          servicesTags: csvLineCells[11],
+          bizContactName: csvLineCells[2],
+          bizPhone: csvLineCells[3],
+          bizCategory: csvLineCells[4],
+          //subcategory [5]
+          postcode: int.parse(csvLineCells[6]),
+          headOfficeAddress: csvLineCells[7],
+          bizEmail: csvLineCells[8],
+          //hours: csvLineCells[9],
+          bizABN: csvLineCells[10],
+          licenseNumber: csvLineCells[11],
+          servicesTags: csvLineCells[12],
         );
 
         gAllBizContacts.add(bizContact);

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pickeze/globals.dart';
-import 'package:pickeze/pages/biz.dart';
+import 'package:pickeze/pages/contact_cards.dart';
 import '../model/profile_model.dart';
 import '../model/recom_model.dart';
 import '../pages/screen_lib.dart';
@@ -252,25 +252,39 @@ class RecommendationListView extends StatelessWidget {
                   children: [
                     Row(children: [
                       Expanded(
-                        child: Text(recommendations[index].tradie.bizName,
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold)),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.feedback,
+                        child: InkWell(
+                          child: Text(recommendations[index].tradie.bizName,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.indigo),
+                              overflow: TextOverflow.ellipsis),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BizPage(
+                                      cBizContact:
+                                          recommendations[index].tradie)),
+                            );
+                          },
                         ),
-                        iconSize: 20,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BizPage(
-                                    cBizContact:
-                                        recommendations[index].tradie)),
-                          );
-                        },
                       ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.feedback,
+                      //   ),
+                      //   iconSize: 20,
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => BizPage(
+                      //               cBizContact:
+                      //                   recommendations[index].tradie)),
+                      //     );
+                      //   },
+                      // ),
                       IconButton(
                         icon: const Icon(
                           Icons.phone,
@@ -304,26 +318,45 @@ class RecommendationListView extends StatelessWidget {
                     Row(children: [
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(recommendations[index].fof!.fullName,
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                            top: 10,
+                          ),
+                          child: InkWell(
+                            child: Text(
+                              recommendations[index].fof!.fullName,
                               style: const TextStyle(
-                                  fontSize: 11, fontWeight: FontWeight.normal)),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.indigo),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FriendContactPage(
+                                        cFriendContact:
+                                            recommendations[index].fof!)),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.phone,
-                        ),
-                        iconSize: 15,
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.message,
-                        ),
-                        iconSize: 15,
-                        onPressed: () {},
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.phone,
+                      //   ),
+                      //   iconSize: 15,
+                      //   onPressed: () {},
+                      // ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.message,
+                      //   ),
+                      //   iconSize: 15,
+                      //   onPressed: () {},
+                      // ),
                     ]),
                   ],
                 ),
