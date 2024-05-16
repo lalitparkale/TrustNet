@@ -1,6 +1,8 @@
 //import 'dart:html';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pickeze/globals.dart';
 import 'package:pickeze/pages/contact_cards.dart';
 import '../model/profile_model.dart';
@@ -249,13 +251,14 @@ class RecommendationListView extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Row(children: [
                       Expanded(
                         child: InkWell(
                           child: Text(recommendations[index].tradie.bizName,
                               style: const TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.indigo),
                               overflow: TextOverflow.ellipsis),
@@ -270,21 +273,6 @@ class RecommendationListView extends StatelessWidget {
                           },
                         ),
                       ),
-                      // IconButton(
-                      //   icon: const Icon(
-                      //     Icons.feedback,
-                      //   ),
-                      //   iconSize: 20,
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => BizPage(
-                      //               cBizContact:
-                      //                   recommendations[index].tradie)),
-                      //     );
-                      //   },
-                      // ),
                       IconButton(
                         icon: const Icon(
                           Icons.phone,
@@ -315,48 +303,37 @@ class RecommendationListView extends StatelessWidget {
                         ),
                       ),
                     ]),
-                    Row(children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            top: 10,
-                          ),
-                          child: InkWell(
-                            child: Text(
-                              recommendations[index].fof!.fullName,
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo),
-                              overflow: TextOverflow.ellipsis,
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          for (var fof in recommendations[index].fofs!)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                                top: 10,
+                              ),
+                              child: InkWell(
+                                child: Text(
+                                  fof.fullName,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.indigo),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FriendContactPage(
+                                            cFriendContact: fof)),
+                                  );
+                                },
+                              ),
                             ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FriendContactPage(
-                                        cFriendContact:
-                                            recommendations[index].fof!)),
-                              );
-                            },
-                          ),
-                        ),
+                        ],
                       ),
-                      // IconButton(
-                      //   icon: const Icon(
-                      //     Icons.phone,
-                      //   ),
-                      //   iconSize: 15,
-                      //   onPressed: () {},
-                      // ),
-                      // IconButton(
-                      //   icon: const Icon(
-                      //     Icons.message,
-                      //   ),
-                      //   iconSize: 15,
-                      //   onPressed: () {},
-                      // ),
                     ]),
                   ],
                 ),

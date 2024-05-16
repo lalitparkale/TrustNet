@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pickeze/globals.dart';
 import '../pages/screen_lib.dart';
 import '../globals.dart' as globals;
@@ -67,6 +66,9 @@ class SharedBizContactsTile extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.indigoAccent.withOpacity(0.5),
+              ),
               onPressed: () {
                 addBizContactDialogBuilder(context);
               },
@@ -74,7 +76,7 @@ class SharedBizContactsTile extends StatelessWidget {
                 'Add Contact',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: Colors.indigo,
                 ),
               ),
             ),
@@ -334,6 +336,9 @@ class SharedContactsTile extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.indigoAccent.withOpacity(0.5),
+              ),
               onPressed: () {
                 addContactDialogBuilder(context);
               },
@@ -341,7 +346,7 @@ class SharedContactsTile extends StatelessWidget {
                 'Add Contact',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: Colors.indigo,
                 ),
               ),
             ),
@@ -682,7 +687,10 @@ class FormUserProfileState extends State<FormUserProfile> {
                       ),
                     );
                   },
-                  child: const Text('Save'),
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(color: Colors.indigo),
+                  ),
                 ),
               ),
             ],

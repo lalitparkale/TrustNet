@@ -40,8 +40,9 @@ List<RecommendationModel> getRecommendations() {
   // extract the trade category from search string
   List<String> searchedCategories = [];
   for (var i = 0; i < gCategories.length; i++) {
-    if (SearchModel.getSearchText().toLowerCase().contains(gCategories[i])) {
-      searchedCategories.add(gCategories[i]);
+    String cat = gCategories[i].toLowerCase();
+    if (SearchModel.getSearchText().toLowerCase().contains(cat)) {
+      searchedCategories.add(cat);
     }
   }
   if (searchedCategories.isEmpty) return ret;
@@ -62,6 +63,7 @@ List<RecommendationModel> getRecommendations() {
     }
 
     List<int>? uids;
+    List<UserContact> users = [];
     UserContact user = UserContact(id: 0, fName: '', fullName: '', mobile: '');
     //include as recommendation only if the trade category matches
     for (var j = 0; j < searchedCategories.length; j++) {
@@ -73,13 +75,14 @@ List<RecommendationModel> getRecommendations() {
         if (null != uids) {
           for (var uid in uids) {
             user = gAllUsers.where((element) => element.id == uid).first;
+            users.add(user);
           }
         } else {
           //assign a random user
           //user = gAllUsers[i % gAllUsers.length];
         }
 
-        ret.add(RecommendationModel(tradie: keyT, fof: user));
+        ret.add(RecommendationModel(tradie: keyT, fofs: users));
         i++;
         break;
       }
@@ -91,12 +94,12 @@ List<RecommendationModel> getRecommendations() {
 
 class RecommendationModel {
   BusinessContact tradie;
-  UserContact? fof;
+  List<UserContact>? fofs;
   int level = 0;
   List<UserContact>? hierarchy;
 
   RecommendationModel(
-      {required this.tradie, this.fof, this.level = 0, this.hierarchy});
+      {required this.tradie, this.fofs, this.level = 0, this.hierarchy});
 }
 
 /*

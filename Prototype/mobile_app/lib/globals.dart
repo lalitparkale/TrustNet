@@ -108,6 +108,7 @@ List<String> gCategories = [
   'appliances',
   'aircon',
   'pest',
+  'pest control',
   'removalist',
   'mover',
   'mechanic',
