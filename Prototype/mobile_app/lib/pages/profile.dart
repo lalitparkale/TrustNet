@@ -57,11 +57,14 @@ class SharedBizContactsTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Shared Business Contacts',
+            'Shared Tradies Contacts',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Align(
             alignment: Alignment.topLeft,
@@ -76,7 +79,8 @@ class SharedBizContactsTile extends StatelessWidget {
                 'Add Contact',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.indigo,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -202,6 +206,10 @@ class FormAddBizContactState extends State<FormAddBizContact> {
           TextFormField(
             decoration: const InputDecoration(
               hintText: 'Contact Name',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
             ),
             onSaved: (newValue) {
               newBizContact.bizName = newValue!;
@@ -216,8 +224,11 @@ class FormAddBizContactState extends State<FormAddBizContact> {
           ),
           TextFormField(
             decoration: const InputDecoration(
-              hintText: 'Mobile',
-            ),
+                hintText: 'Mobile number',
+                hintStyle: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic)),
             onSaved: (newValue) {
               newBizContact.bizContactMobile = newValue!;
             },
@@ -234,6 +245,10 @@ class FormAddBizContactState extends State<FormAddBizContact> {
           TextFormField(
             decoration: const InputDecoration(
               hintText: 'Business postcode',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
             ),
             onSaved: (newValue) {
               newBizContact.postcode = int.parse(newValue!);
@@ -251,7 +266,11 @@ class FormAddBizContactState extends State<FormAddBizContact> {
           ),
           DropdownButtonFormField(
             decoration: const InputDecoration(
-              hintText: 'Business Category',
+              hintText: 'Select Business Category',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
             ),
             items: globals.gCategories
                 .map((String category) => DropdownMenuItem(
@@ -292,7 +311,9 @@ class FormAddBizContactState extends State<FormAddBizContact> {
                       );
                     }
                   },
-                  child: const Text('Add'),
+                  child: const Text('Add',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
               Padding(
@@ -302,6 +323,7 @@ class FormAddBizContactState extends State<FormAddBizContact> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
                   ),
+
                   onPressed: () {
                     //Navigator.of(context).pop();
                     Navigator.push(
@@ -310,7 +332,9 @@ class FormAddBizContactState extends State<FormAddBizContact> {
                           builder: (context) => const ProfilePage()),
                     );
                   },
-                  child: const Text('Cancel'),
+                  child: const Text('Cancel',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
@@ -345,6 +369,9 @@ class SharedContactsTile extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Align(
             alignment: Alignment.topLeft,
             child: ElevatedButton(
@@ -358,7 +385,8 @@ class SharedContactsTile extends StatelessWidget {
                 'Add Contact',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.indigo,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -452,6 +480,10 @@ class FormAddContactState extends State<FormAddContact> {
             },
             decoration: const InputDecoration(
               hintText: 'First Name',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
             ),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -467,6 +499,10 @@ class FormAddContactState extends State<FormAddContact> {
             },
             decoration: const InputDecoration(
               hintText: 'Last Name',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
             ),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -481,6 +517,10 @@ class FormAddContactState extends State<FormAddContact> {
             },
             decoration: const InputDecoration(
               hintText: 'Mobile',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
             ),
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp('[0-9]')),
@@ -519,7 +559,9 @@ class FormAddContactState extends State<FormAddContact> {
                       );
                     }
                   },
-                  child: const Text('Add'),
+                  child: const Text('Add',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
               Padding(
@@ -537,7 +579,9 @@ class FormAddContactState extends State<FormAddContact> {
                           builder: (context) => const ProfilePage()),
                     );
                   },
-                  child: const Text('Cancel'),
+                  child: const Text('Cancel',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
@@ -617,6 +661,10 @@ class FormUserProfileState extends State<FormUserProfile> {
             },
             decoration: const InputDecoration(
               hintText: 'Full Name',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
               labelText: 'Full Name',
             ),
             validator: (String? value) {
@@ -632,7 +680,11 @@ class FormUserProfileState extends State<FormUserProfile> {
               gUserProfile.mobile = newValue!;
             },
             decoration: const InputDecoration(
-              hintText: 'Mobile',
+              hintText: 'Enter mobile number as 04*******',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
               labelText: 'Mobile',
             ),
             inputFormatters: [
@@ -655,6 +707,10 @@ class FormUserProfileState extends State<FormUserProfile> {
             },
             decoration: const InputDecoration(
               hintText: 'Postcode',
+              hintStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic),
               labelText: 'Postcode',
             ),
             inputFormatters: [
@@ -681,9 +737,33 @@ class FormUserProfileState extends State<FormUserProfile> {
                     // the form is invalid.
                     formKeyProfile.currentState!.save();
                     if (formKeyProfile.currentState!.validate()) {
-                      findUIDforProfile(gUserProfile.mobile);
+                      //before saving the profile check if the user is already
+                      //in the db based on the mobile number as key
+                      bool ret = findUIDforProfile(gUserProfile.mobile);
+                      if (ret == false) {
+                        //if not found then assign a new ID
+                        gUserProfile.id = getUniqueUserID();
+                      }
                       //save user profile to db
                       saveUserProfile();
+
+                      //if ID has not found then notify user what it means
+                      if (ret == false) {
+                        //show user message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text(
+                              'It seems your mobile number is not registered for this pilot. Please ensure mobile is entered starting with a \'0\', like 04********',
+                            ),
+                            backgroundColor: Colors.black.withOpacity(1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            showCloseIcon: true,
+                            duration: const Duration(seconds: 10),
+                          ),
+                        );
+                      }
 
                       //show user message
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -702,7 +782,8 @@ class FormUserProfileState extends State<FormUserProfile> {
                   },
                   child: const Text(
                     'Save',
-                    style: TextStyle(color: Colors.indigo),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

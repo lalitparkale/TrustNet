@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     gUserProfile.email = '';
     gUserProfile.postcode = 0;
 
+    gCategories.sort();
     //gPooledBizContacts - read tradies data from csv file and populate global object
     gAllBizContacts.clear();
     loadDBAllTradies();
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
     //Load all shared contacts from persistent file
     UserContact.loadSharedContactsFromFile().then((value) {
       gSharedContacts = value;
-      gUniqueUserID = gSharedContacts.length + 1;
+      gUniqueUserID = gAllUsers.length + 9000001;
       incrementInitCounter();
     });
 

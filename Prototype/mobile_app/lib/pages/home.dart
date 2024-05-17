@@ -38,20 +38,30 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Welcome to Pickeze!'),
+          title: const Align(
+              alignment: Alignment.center, child: Text('Welcome to Pickeze!')),
           content: const SingleChildScrollView(
             child: ListBody(
+              mainAxis: Axis.vertical,
               children: <Widget>[
                 Text('Please update your profile to continue.'),
               ],
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.indigoAccent.withOpacity(0.5),
+                ),
+                child: const Text('OK',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+              ),
             ),
           ],
         );
@@ -82,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   width: 112,
                 ),
               ),
-              const Text('Tap into the power of your friends network',
+              const Text('Unlock the power of your friends network',
                   style: TextStyle(
                     fontSize: 12,
                     //fontWeight: FontWeight.bold,

@@ -16,7 +16,7 @@ Container searchBar(BuildContext context) {
           borderRadius: BorderRadius.circular(25),
         ),
         labelText: 'Search',
-        hintText: 'search for services, like fix leaking pipe',
+        hintText: 'search for tradies, like plumber to fix leaking pipe',
         hintStyle: const TextStyle(
             fontSize: 11, color: Colors.grey, fontStyle: FontStyle.italic),
 

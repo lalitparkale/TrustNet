@@ -79,6 +79,7 @@ List<BusinessContact> gAllBizContacts =
 List<AusPostcode> gAusPostCodes = List<AusPostcode>.empty(growable: true);
 
 List<String> gCategories = [
+  'arborist',
   'plumber',
   'electrician',
   'carpenter',
@@ -117,6 +118,12 @@ List<String> gCategories = [
   'pergola',
   'Gardening',
   'Lawn Mowing',
+  'Equipment Repairs',
+  'Snake Catcher',
+  'Gyprock',
+  'Dentist',
+  'Builder Inspector',
+  'Podiatrist',
 ];
 
 /////////////////////////////////////////////////
@@ -232,13 +239,14 @@ Future<File> get getFileSharedBizContacts async {
   return File('$path/sharedbizcontacts.json');
 }
 
-void findUIDforProfile(String mobile) {
+bool findUIDforProfile(String mobile) {
   for (var i = 0; i < gAllUsers.length; i++) {
     if (gAllUsers[i].mobile == mobile) {
       gUserProfile.id = gAllUsers[i].id;
-      break;
+      return true;
     }
   }
+  return false;
 }
 
 void saveUserProfile() {
@@ -429,6 +437,9 @@ int getLevel(
   int fid,
 ) {
   int level = 0;
+
+  if (null == gFriendsMap[uid]) return level;
+
   List<int> friends = gFriendsMap[uid]!;
   if (uid == fid) return 0;
 

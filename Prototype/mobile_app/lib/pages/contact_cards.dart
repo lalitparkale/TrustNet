@@ -31,6 +31,7 @@ class BizPage extends StatelessWidget {
                 color: Color.fromARGB(255, 0, 17, 221)),
           ),
         ),
+        bizLineItem("Category", cBizContact.bizCategory),
         bizLineItem("Contact Name", cBizContact.bizContactName),
         bizLineItem("Contact Mobile", cBizContact.bizContactMobile),
         bizLineItem("Business Phone", cBizContact.bizPhone),
