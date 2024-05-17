@@ -9,8 +9,31 @@ import '../model/profile_model.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  void init() {
+    //load all my friends contacts from already loaded gAllBizContacts from gUsedServicesMap
+    gFriendsMap[gUserProfile.id]?.forEach((fid) {
+      try {
+        gSharedContacts
+            .add(gAllUsers.where((element) => element.id == fid).first);
+      } catch (e) {
+        print('Error: $e');
+      }
+    });
+
+    //load all shared Business contacts from already loaded gAllBizContacts from gUsedServicesMap
+    gUsedServicesMap[gUserProfile.id]?.forEach((bid) {
+      try {
+        gSharedBizContacts
+            .add(gAllBizContacts.where((element) => element.id == bid).first);
+      } catch (e) {
+        print('Error: $e');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    init();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -129,7 +152,7 @@ class SharedBizContactsTile extends StatelessWidget {
                               style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal))),
-                          DataCell(Text(contact.bizContactMobile!,
+                          DataCell(Text(contact.bizContactMobile ?? '',
                               style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal))),
