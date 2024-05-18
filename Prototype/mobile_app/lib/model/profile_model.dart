@@ -144,18 +144,34 @@ class UserContact {
   }
 }
 
-enum FeedbackType { na, bad, good, delighted }
+enum FeedbackSentiment { na, bad, good, awesome }
+
+enum FeedbackCriteria {
+  quality,
+  price,
+  professionalism,
+  commitment,
+  communication,
+  transparency
+}
+
+const String labelQuality = 'Quality';
+const String labelPrice = 'Price';
+const String labelProfessionalism = 'Professionalism';
+const String labelCommitment = 'Commitment';
+const String labelCommunication = 'Communication';
+const String labelTransparency = 'Transparency';
 
 class BizFeedback {
   int id = 0;
   String? comments;
   String? workType;
-  FeedbackType workQuality;
-  FeedbackType workPrice;
-  FeedbackType workProfessionalism;
-  FeedbackType workTimeCommitment;
-  FeedbackType workCommunication;
-  FeedbackType workTransparency;
+  FeedbackSentiment workQuality;
+  FeedbackSentiment workPrice;
+  FeedbackSentiment workProfessionalism;
+  FeedbackSentiment workTimeCommitment;
+  FeedbackSentiment workCommunication;
+  FeedbackSentiment workTransparency;
   DateTime? workDate;
   DateTime? feedbackDate;
 
@@ -163,12 +179,12 @@ class BizFeedback {
     required this.id,
     this.comments,
     this.workType,
-    this.workQuality = FeedbackType.na,
-    this.workPrice = FeedbackType.na,
-    this.workProfessionalism = FeedbackType.na,
-    this.workTimeCommitment = FeedbackType.na,
-    this.workCommunication = FeedbackType.na,
-    this.workTransparency = FeedbackType.na,
+    this.workQuality = FeedbackSentiment.na,
+    this.workPrice = FeedbackSentiment.na,
+    this.workProfessionalism = FeedbackSentiment.na,
+    this.workTimeCommitment = FeedbackSentiment.na,
+    this.workCommunication = FeedbackSentiment.na,
+    this.workTransparency = FeedbackSentiment.na,
     this.workDate,
     this.feedbackDate,
   });
@@ -177,12 +193,12 @@ class BizFeedback {
       : id = json['id'] as int,
         comments = json['comments'] as String,
         workType = json['workType'] as String,
-        workQuality = json['workQuality'] as FeedbackType,
-        workPrice = json['workPrice'] as FeedbackType,
-        workProfessionalism = json['workProfessionalism'] as FeedbackType,
-        workTimeCommitment = json['workTimeCommitment'] as FeedbackType,
-        workCommunication = json['workCommunication'] as FeedbackType,
-        workTransparency = json['workTransparency'] as FeedbackType,
+        workQuality = json['workQuality'] as FeedbackSentiment,
+        workPrice = json['workPrice'] as FeedbackSentiment,
+        workProfessionalism = json['workProfessionalism'] as FeedbackSentiment,
+        workTimeCommitment = json['workTimeCommitment'] as FeedbackSentiment,
+        workCommunication = json['workCommunication'] as FeedbackSentiment,
+        workTransparency = json['workTransparency'] as FeedbackSentiment,
         workDate = json['workDate'] as DateTime,
         feedbackDate = json['feedbackDate'] as DateTime;
 
@@ -216,7 +232,6 @@ class BusinessContact {
   late String? bizCategory;
   double lat = 0;
   double lon = 0;
-  BizFeedback? feedback;
 
   BusinessContact({
     required this.id,
@@ -231,7 +246,6 @@ class BusinessContact {
     this.postcode = 0,
     this.servicesTags,
     this.bizCategory,
-    this.feedback,
   });
 
   BusinessContact.fromJson(Map<String, dynamic> json)

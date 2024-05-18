@@ -39,6 +39,11 @@ class SearchModel {
 //create a static variable for userprofile
 UserProfile gUserProfile = UserProfile(isVerified: 0);
 
+//Map of all feedbacks
+//Map<uid, Map<fid, feedback>>
+Map<int, Map<int, BizFeedback>> gAllFeedbackMap =
+    <int, Map<int, BizFeedback>>{};
+
 /*
 Friends
 */

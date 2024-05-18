@@ -143,8 +143,8 @@ class SharedBizContactsTile extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        FeedbackPage(biz: contact)),
+                                    builder: (context) => FeedbackPage(
+                                        bid: contact.id, uid: gUserProfile.id)),
                               );
                             },
                           )),
@@ -820,9 +820,10 @@ class FormUserProfileState extends State<FormUserProfile> {
 
 //Feedback display page
 class FeedbackPage extends StatelessWidget {
-  const FeedbackPage({super.key, required this.biz});
+  FeedbackPage({super.key, required this.bid, required this.uid});
 
-  final BusinessContact biz;
+  final int bid;
+  final int uid;
 
   @override
   Widget build(BuildContext context) {
@@ -841,7 +842,8 @@ class FeedbackPage extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            biz.bizName,
+            //bc!.bizName,
+            gAllBizContacts.where((element) => element.id == bid).first.bizName,
             style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -849,7 +851,8 @@ class FeedbackPage extends StatelessWidget {
           ),
         ),
         FormFeedback(
-          bizContact: biz,
+          bid: bid,
+          uid: gUserProfile.id,
         ),
       ]),
     );
@@ -858,8 +861,10 @@ class FeedbackPage extends StatelessWidget {
 
 //stateful form widget to get and display feedback
 class FormFeedback extends StatefulWidget {
-  FormFeedback({super.key, required this.bizContact});
-  BusinessContact bizContact;
+  FormFeedback({super.key, required this.bid, required this.uid});
+
+  final int bid;
+  final int uid;
 
   @override
   State<FormFeedback> createState() => FormFeedbackState();
@@ -868,23 +873,33 @@ class FormFeedback extends StatefulWidget {
 class FormFeedbackState extends State<FormFeedback> {
   final GlobalKey<FormState> formKeyFeedback = GlobalKey<FormState>();
 
+  BusinessContact? bc;
+  UserContact? uc;
+  BizFeedback? fb;
+
+  //set state
+  void setFeedbackState() {
+    setState(() {
+      //fb = gAllFeedbackMap[widget.uid]?[widget.bid];
+    });
+  }
+
   //init function
   @override
   void initState() {
-    //if feedback is null, create a new feedback object
-    widget.bizContact.feedback ??= BizFeedback(
-      id: 1,
-      comments: '',
-      workQuality: FeedbackType.na,
-      workPrice: FeedbackType.na,
-      workProfessionalism: FeedbackType.na,
-      workTimeCommitment: FeedbackType.na,
-      workCommunication: FeedbackType.na,
-      workTransparency: FeedbackType.na,
-      workType: '',
-      //workDate: ,
-      //feedbackDate: ,
-    );
+    //get Business contact from bid
+    bc = gAllBizContacts.where((element) => element.id == widget.bid).first;
+
+    //get User contact from uid
+    uc = gAllUsers.where((element) => element.id == widget.uid).first;
+
+    fb = (gAllFeedbackMap[widget.uid] == null)
+        ? fb = BizFeedback(
+            id: 1, comments: '', workType: '', workDate: DateTime.now())
+        : (gAllFeedbackMap[widget.uid]?[widget.bid] == null)
+            ? fb = BizFeedback(
+                id: 1, comments: '', workType: '', workDate: DateTime.now())
+            : gAllFeedbackMap[widget.uid]?[widget.bid];
 
     super.initState();
   }
@@ -898,10 +913,9 @@ class FormFeedbackState extends State<FormFeedback> {
         child: Column(
           children: [
             TextFormField(
-              controller: TextEditingController()
-                ..text = widget.bizContact.feedback!.comments!,
+              controller: TextEditingController()..text = fb!.comments!,
               onSaved: (newValue) {
-                widget.bizContact.feedback!.comments = newValue!;
+                fb!.comments = newValue!;
               },
               keyboardType: TextInputType.multiline,
               style: const TextStyle(fontSize: 12),
@@ -922,10 +936,9 @@ class FormFeedbackState extends State<FormFeedback> {
               },
             ),
             TextFormField(
-              controller: TextEditingController()
-                ..text = widget.bizContact.feedback!.workType!,
+              controller: TextEditingController()..text = fb!.workType!,
               onSaved: (newValue) {
-                widget.bizContact.feedback!.workType = newValue!;
+                fb!.workType = newValue!;
               },
               style: const TextStyle(fontSize: 12),
               decoration: const InputDecoration(
@@ -945,17 +958,25 @@ class FormFeedbackState extends State<FormFeedback> {
             ),
             TextFormField(
               controller: TextEditingController()
-                ..text = (widget.bizContact.feedback!.workDate != null)
-                    ? widget.bizContact.feedback!.workDate.toString()
+                ..text = (fb!.workDate != null)
+                    ? '${fb!.workDate!.month}\\${fb!.workDate!.year.toString()}'
                     : '',
               onSaved: (newValue) {
                 (newValue != '')
-                    ? widget.bizContact.feedback!.workDate =
-                        newValue as DateTime?
+                    ? (() {
+                        DateTime dt;
+                        try {
+                          dt = DateTime.parse(newValue!);
+                        } catch (e) {
+                          print('Error: $e');
+                          dt = DateTime.now();
+                        }
+                        fb!.workDate = DateTime(dt.year, dt.month, dt.day);
+                      })
                     : null;
               },
               inputFormatters: [
-                FilteringTextInputFormatter(RegExp('[0-9]'), allow: true)
+                FilteringTextInputFormatter(RegExp('[0-9\\0-9]'), allow: true)
               ],
               style: const TextStyle(fontSize: 12),
               decoration: const InputDecoration(
@@ -973,17 +994,37 @@ class FormFeedbackState extends State<FormFeedback> {
                 return null;
               },
             ),
-            FeedbackLineItem(fb: widget.bizContact.feedback!, label: 'Quality'),
-            FeedbackLineItem(fb: widget.bizContact.feedback!, label: 'Price'),
-            FeedbackLineItem(
-                fb: widget.bizContact.feedback!, label: 'Professionalism'),
-            FeedbackLineItem(
-                fb: widget.bizContact.feedback!, label: 'Commitment'),
-            FeedbackLineItem(
-                fb: widget.bizContact.feedback!, label: 'Communication'),
-            FeedbackLineItem(
-                fb: widget.bizContact.feedback!, label: 'Transparency'),
-            Text('Feedback Date: ${widget.bizContact.feedback!.feedbackDate}'),
+            LineItem(
+                label: labelQuality,
+                fbs: fb!.workQuality,
+                bid: widget.bid,
+                uid: widget.uid),
+            LineItem(
+                label: labelPrice,
+                fbs: fb!.workPrice,
+                bid: widget.bid,
+                uid: widget.uid),
+            LineItem(
+                label: labelProfessionalism,
+                fbs: fb!.workProfessionalism,
+                bid: widget.bid,
+                uid: widget.uid),
+            LineItem(
+                label: labelCommitment,
+                fbs: fb!.workTimeCommitment,
+                bid: widget.bid,
+                uid: widget.uid),
+            LineItem(
+                label: labelCommunication,
+                fbs: fb!.workCommunication,
+                bid: widget.bid,
+                uid: widget.uid),
+            LineItem(
+                label: labelTransparency,
+                fbs: fb!.workTransparency,
+                bid: widget.bid,
+                uid: widget.uid),
+            Text('Feedback Date: ${fb!.feedbackDate}'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -1000,21 +1041,21 @@ class FormFeedbackState extends State<FormFeedback> {
                       if (formKeyFeedback.currentState!.validate()) {
                         //save user profile to db
                         //saveUserProfile();
-                      }
 
-                      //show user message
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                            'Feedback saved',
+                        //show user message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text(
+                              'Feedback saved',
+                            ),
+                            backgroundColor: Colors.blueAccent.withOpacity(0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            showCloseIcon: true,
                           ),
-                          backgroundColor: Colors.blueAccent.withOpacity(0.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          showCloseIcon: true,
-                        ),
-                      );
+                        );
+                      }
                     },
                     child: const Text(
                       'Save',
@@ -1029,23 +1070,32 @@ class FormFeedbackState extends State<FormFeedback> {
       ),
     );
   }
+
+  // Widget sentimentItemWidget(
+  //     String label, FeedbackSentiment fb, int bid, int uid) {
+  //   return
+  // }
 }
 
-class FeedbackLineItem extends StatefulWidget {
-  const FeedbackLineItem({
-    super.key,
-    required this.fb,
-    required this.label,
-  });
+//stateful class for lineitem
+class LineItem extends StatefulWidget {
+  LineItem(
+      {super.key,
+      required this.label,
+      required this.fbs,
+      required this.bid,
+      required this.uid});
 
-  final BizFeedback fb;
   final String label;
+  FeedbackSentiment fbs;
+  int bid;
+  int uid;
 
   @override
-  State<FeedbackLineItem> createState() => _FeedbackLineItemState();
+  State<LineItem> createState() => LineItemState();
 }
 
-class _FeedbackLineItemState extends State<FeedbackLineItem> {
+class LineItemState extends State<LineItem> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -1063,32 +1113,137 @@ class _FeedbackLineItemState extends State<FeedbackLineItem> {
             )),
         IconButton(
           icon: Icon(Icons.favorite,
-              color: (widget.fb.workQuality == FeedbackType.delighted)
+              color: (widget.fbs == FeedbackSentiment.awesome)
                   ? Colors.green
                   : Colors.grey),
           onPressed: () {
-            widget.fb.workQuality = FeedbackType.delighted;
-            setState(() {});
+            widget.fbs = FeedbackSentiment.awesome;
+            if (gAllFeedbackMap[widget.uid] == null) {
+              gAllFeedbackMap[widget.uid] = {};
+            }
+            if (gAllFeedbackMap[widget.uid]![widget.bid] == null) {
+              gAllFeedbackMap[widget.uid]![widget.bid] = BizFeedback(
+                  id: 1, comments: '', workType: '', workDate: DateTime.now());
+            }
+            switch (widget.label) {
+              case labelQuality:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workQuality =
+                    widget.fbs;
+                break;
+              case labelPrice:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workPrice =
+                    widget.fbs;
+                break;
+              case labelProfessionalism:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workProfessionalism =
+                    widget.fbs;
+                break;
+              case labelCommitment:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workTimeCommitment =
+                    widget.fbs;
+                break;
+              case labelCommunication:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workCommunication =
+                    widget.fbs;
+                break;
+              case labelTransparency:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workTransparency =
+                    widget.fbs;
+                break;
+            }
+            setState(() {
+              widget.fbs = FeedbackSentiment.awesome;
+            });
           },
         ),
         IconButton(
           icon: Icon(Icons.thumb_up,
-              color: (widget.fb.workQuality == FeedbackType.good)
+              color: (widget.fbs == FeedbackSentiment.good)
                   ? Colors.yellow
                   : Colors.grey),
           onPressed: () {
-            widget.fb.workQuality = FeedbackType.good;
-            setState(() {});
+            widget.fbs = FeedbackSentiment.good;
+            if (gAllFeedbackMap[widget.uid] == null) {
+              gAllFeedbackMap[widget.uid] = {};
+            }
+            if (gAllFeedbackMap[widget.uid]![widget.bid] == null) {
+              gAllFeedbackMap[widget.uid]![widget.bid] = BizFeedback(
+                  id: 1, comments: '', workType: '', workDate: DateTime.now());
+            }
+            switch (widget.label) {
+              case labelQuality:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workQuality =
+                    widget.fbs;
+                break;
+              case labelPrice:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workPrice =
+                    widget.fbs;
+                break;
+              case labelProfessionalism:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workProfessionalism =
+                    widget.fbs;
+                break;
+              case labelCommitment:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workTimeCommitment =
+                    widget.fbs;
+                break;
+              case labelCommunication:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workCommunication =
+                    widget.fbs;
+                break;
+              case labelTransparency:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workTransparency =
+                    widget.fbs;
+                break;
+            }
+            setState(() {
+              widget.fbs = FeedbackSentiment.good;
+            });
           },
         ),
         IconButton(
           icon: Icon(Icons.thumb_down,
-              color: (widget.fb.workQuality == FeedbackType.bad)
+              color: (widget.fbs == FeedbackSentiment.bad)
                   ? Colors.red
                   : Colors.grey),
           onPressed: () {
-            widget.fb.workQuality = FeedbackType.bad;
-            setState(() {});
+            widget.fbs = FeedbackSentiment.bad;
+            if (gAllFeedbackMap[widget.uid] == null) {
+              gAllFeedbackMap[widget.uid] = {};
+            }
+            if (gAllFeedbackMap[widget.uid]![widget.bid] == null) {
+              gAllFeedbackMap[widget.uid]![widget.bid] = BizFeedback(
+                  id: 1, comments: '', workType: '', workDate: DateTime.now());
+            }
+            switch (widget.label) {
+              case labelQuality:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workQuality =
+                    widget.fbs;
+                break;
+              case labelPrice:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workPrice =
+                    widget.fbs;
+                break;
+              case labelProfessionalism:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workProfessionalism =
+                    widget.fbs;
+                break;
+              case labelCommitment:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workTimeCommitment =
+                    widget.fbs;
+                break;
+              case labelCommunication:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workCommunication =
+                    widget.fbs;
+                break;
+              case labelTransparency:
+                gAllFeedbackMap[widget.uid]![widget.bid]!.workTransparency =
+                    widget.fbs;
+                break;
+            }
+            setState(() {
+              widget.fbs = FeedbackSentiment.bad;
+            });
           },
         ),
       ],
