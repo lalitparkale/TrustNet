@@ -216,7 +216,7 @@ class RecommendationListView extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       itemBuilder: (context, index) {
         return Container(
-          height: 128,
+          height: 164,
           //width: 100,
           margin:
               const EdgeInsets.only(top: 12, bottom: 12, left: 10, right: 10),
@@ -365,17 +365,37 @@ class RecommendationListView extends StatelessWidget {
                                       );
                                     },
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: CircleAvatar(
-                                        maxRadius: 10,
-                                        child: Text(
-                                            getLevel(gUserProfile.id, fof.id)
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))),
+                                  Card(
+                                    color: Colors.blueGrey.withOpacity(0.2),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      child: RichText(
+                                        //'Level: ${getLevel(gUserProfile.id, fof.id).toString()}',
+                                        text: const TextSpan(
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.black),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: 'Level: ',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black),
+                                            ),
+                                            TextSpan(
+                                              text: '2',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

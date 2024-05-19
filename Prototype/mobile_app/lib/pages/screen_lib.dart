@@ -53,7 +53,7 @@ BottomNavigationBar navBar(BuildContext context) {
         label: 'Profile',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(Icons.search),
         label: 'Home',
       ),
       BottomNavigationBarItem(
