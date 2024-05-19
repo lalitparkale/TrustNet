@@ -53,8 +53,9 @@ BottomNavigationBar navBar(BuildContext context) {
         label: 'Profile',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.search),
-        label: 'Home',
+        icon: Icon(Icons.search,
+            color: Color.fromRGBO(colorR, colorG, colorB, colorO)),
+        label: appName,
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.star),

@@ -653,7 +653,7 @@ class BasicProfileCard extends StatelessWidget {
           //         context,
           //         MaterialPageRoute(
           //             builder: (context) =>
-          //                 const LoginPage(title: 'Pickeze Login')),
+          //                 const LoginPage(title: '$appName Login')),
           //       );
           //     },
           //     child: const Text('Log out')),

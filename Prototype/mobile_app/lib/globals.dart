@@ -6,6 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'model/profile_model.dart';
 
+//App brand name
+const String appName = 'Pickeze';
+
+//RGB Color for hex #0011dd
+const int colorR = 0;
+const int colorG = 18;
+const int colorB = 221;
+const double colorO = 1;
+
 //number of async initialisation activities
 const int initActivities = 6;
 //counter to track the number of async initialisation activities.
@@ -437,23 +446,58 @@ void loadDBAllUsers() async {
 /////////////////////////////////////////////////
 
 //Map<int, List<int>> gFriendsMap = <int, List<int>>{};
+class FriendLevel {
+  int level;
+  List<int> path = <int>[];
+  String get pathStr {
+    String str = '';
 
-int getLevel(
+    if (path.isEmpty) {
+      str = 'Not in network';
+      return str;
+    }
+
+    if (path.length == 1) {
+      str = 'Direct friend';
+      return str;
+    }
+
+    for (var i = path.length - 1; i > 0; i--) {
+      str += '-> ';
+      str += gAllUsers.where((element) => element.id == path[i]).first.fName;
+    }
+    return str;
+  }
+
+  FriendLevel({required this.level, this.path = const <int>[]});
+}
+
+FriendLevel getLevel(
   int uid,
   int fid,
 ) {
   int level = 0;
+  FriendLevel fLevel = FriendLevel(level: level, path: <int>[]);
 
-  if (null == gFriendsMap[uid]) return level;
+  if (null == gFriendsMap[uid]) return fLevel;
 
   List<int> friends = gFriendsMap[uid]!;
-  if (uid == fid) return 0;
+  if (uid == fid) {
+    level++;
+    fLevel.level = level;
+    fLevel.path.add(uid);
+    return fLevel;
+  }
 
   if (friends.contains(fid)) {
     level++;
+    fLevel.level = level;
+    fLevel.path.add(fid);
+    return fLevel;
   } else {
     if (friends.isNotEmpty) {
       level++;
+      fLevel.path.add(uid);
       Set<int> friends3 = <int>{};
       for (var i = 0; i < friends.length; i++) {
         if (uid == friends[i]) {
@@ -462,7 +506,10 @@ int getLevel(
         List<int> friends2 = gFriendsMap[friends[i]]!;
 
         if (friends2.contains(fid)) {
-          return ++level;
+          ++level;
+          fLevel.level = level;
+          fLevel.path.add(friends[i]);
+          return fLevel;
         }
 
         friends2.remove(uid);
@@ -481,7 +528,10 @@ int getLevel(
           List<int> friends4 = gFriendsMap[friends3.elementAt(j)]!;
 
           if (friends4.contains(fid)) {
-            return ++level;
+            ++level;
+            fLevel.level = level;
+            fLevel.path.add(friends3.elementAt(j));
+            return fLevel;
           }
 
           friends4.remove(uid);
@@ -500,7 +550,10 @@ int getLevel(
             List<int> friends6 = gFriendsMap[friends5.elementAt(j)]!;
 
             if (friends6.contains(fid)) {
-              return ++level;
+              ++level;
+              fLevel.level = level;
+              fLevel.path.add(friends5.elementAt(j));
+              return fLevel;
             }
             friends6.remove(uid);
             //add only unique friends to queue
@@ -516,6 +569,6 @@ int getLevel(
       level = 0;
     }
   }
-  return level;
+  return fLevel;
 }
 //LocationService globalLocationService = LocationService();

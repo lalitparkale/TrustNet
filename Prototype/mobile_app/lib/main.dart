@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
     getInitInfo();
 
     return MaterialApp(
-      title: 'Pickeze',
+      title: appName,
       theme: ThemeData(
         // This is the theme of your application.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
@@ -97,9 +97,9 @@ class MyApp extends StatelessWidget {
       routes: {
         // When navigating to the "/" route, build the Create Account widget.
         //'/': (context) => const LoginPage(title: 'TrustNet'),
-        '/': (context) => const HomePage(title: 'Pickeze - word of friends!'),
+        '/': (context) => const HomePage(title: '$appName - word of friends!'),
         '/myappname': (context) =>
-            const HomePage(title: 'Pickeze - word of friends!'),
+            const HomePage(title: '$appName - word of friends!'),
         '/profile': (context) => const ProfilePage(),
       },
     );

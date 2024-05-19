@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Align(
-              alignment: Alignment.center, child: Text('Welcome to Pickeze!')),
+              alignment: Alignment.center, child: Text('Welcome to $appName!')),
           content: const SingleChildScrollView(
             child: ListBody(
               mainAxis: Axis.vertical,
@@ -80,7 +80,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Welcome ${gUserProfile.name}!'),
+          title: RichText(
+              text: TextSpan(
+                  text: '${gUserProfile.name}, ',
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  children: const <TextSpan>[
+                TextSpan(
+                  text: 'welcome to ',
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black),
+                ),
+                TextSpan(
+                  text: '$appName!',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(colorR, colorG, colorB, colorO),
+                  ),
+                )
+              ])),
           automaticallyImplyLeading: false,
         ),
         body: Center(

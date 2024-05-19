@@ -326,7 +326,7 @@ class RecommendationListView extends StatelessWidget {
                           child: Text(
                             'recommended by:',
                             style: TextStyle(
-                              fontSize: 9,
+                              fontSize: 10,
                               fontWeight: FontWeight.normal,
                               fontStyle: FontStyle.italic,
                             ),
@@ -371,7 +371,6 @@ class RecommendationListView extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),
                                       child: RichText(
-                                        //'Level: ${getLevel(gUserProfile.id, fof.id).toString()}',
                                         text: TextSpan(
                                           style: const TextStyle(
                                               fontSize: 10,
@@ -388,11 +387,30 @@ class RecommendationListView extends StatelessWidget {
                                             TextSpan(
                                               text: getLevel(
                                                       gUserProfile.id, fof.id)
+                                                  .level
                                                   .toString(),
                                               style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black),
+                                              //loop through all path items returned by getLevel
+                                            ),
+                                            const TextSpan(
+                                              text: ' : ',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black),
+                                            ),
+                                            TextSpan(
+                                              text: getLevel(
+                                                      gUserProfile.id, fof.id)
+                                                  .pathStr,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black),
+                                              //loop through all path items returned by getLevel
                                             ),
                                           ],
                                         ),
