@@ -372,13 +372,13 @@ class RecommendationListView extends StatelessWidget {
                                           left: 5, right: 5),
                                       child: RichText(
                                         //'Level: ${getLevel(gUserProfile.id, fof.id).toString()}',
-                                        text: const TextSpan(
-                                          style: TextStyle(
+                                        text: TextSpan(
+                                          style: const TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.normal,
                                               color: Colors.black),
                                           children: <TextSpan>[
-                                            TextSpan(
+                                            const TextSpan(
                                               text: 'Level: ',
                                               style: TextStyle(
                                                   fontSize: 10,
@@ -386,8 +386,10 @@ class RecommendationListView extends StatelessWidget {
                                                   color: Colors.black),
                                             ),
                                             TextSpan(
-                                              text: '2',
-                                              style: TextStyle(
+                                              text: getLevel(
+                                                      gUserProfile.id, fof.id)
+                                                  .toString(),
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black),

@@ -10,6 +10,9 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   void init() {
+    gSharedContacts.clear();
+    gSharedBizContacts.clear();
+
     //load all my friends contacts from already loaded gAllBizContacts from gUsedServicesMap
     gFriendsMap[gUserProfile.id]?.forEach((fid) {
       try {
@@ -770,6 +773,12 @@ class FormUserProfileState extends State<FormUserProfile> {
                       //save user profile to db
                       saveUserProfile();
 
+//navigate back to Profile page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfilePage()),
+                      );
                       //if ID has not found then notify user what it means
                       if (ret == false) {
                         //show user message
