@@ -59,7 +59,8 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold)),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/profile');
+                  //Navigator.pushNamed(context, '/profile');
+                  Navigator.popAndPushNamed(context, '/profile');
                 },
               ),
             ),
@@ -80,6 +81,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Welcome ${gUserProfile.name}!'),
+          automaticallyImplyLeading: false,
         ),
         body: Center(
           child: Column(
