@@ -37,6 +37,9 @@ class MyApp extends StatelessWidget {
     //gUsedServicesMap - read used services data from csv file and populate global object
     gUsedServicesMap.clear();
     loadDBUsedServices();
+    //gAllFeedbackMap - read feedback data from csv file and populate global object
+    gAllFeedbackMap.clear();
+    loadAllFeedbackFromFile();
     //read australian post codes from csv file and populate global object
     gAusPostCodes.clear();
     loadAustralianPostcodes();

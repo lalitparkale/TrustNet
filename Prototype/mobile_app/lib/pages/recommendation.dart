@@ -366,7 +366,7 @@ class RecommendationListView extends StatelessWidget {
                                     },
                                   ),
                                   Card(
-                                    color: Colors.blueGrey.withOpacity(0.2),
+                                    color: Colors.lightBlue.shade50,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 5, right: 5),

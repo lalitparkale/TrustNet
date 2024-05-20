@@ -172,7 +172,7 @@ class BizFeedback {
   FeedbackSentiment workTimeCommitment;
   FeedbackSentiment workCommunication;
   FeedbackSentiment workTransparency;
-  DateTime? workDate;
+  //DateTime? workDate;
   DateTime? feedbackDate;
 
   BizFeedback({
@@ -185,7 +185,6 @@ class BizFeedback {
     this.workTimeCommitment = FeedbackSentiment.na,
     this.workCommunication = FeedbackSentiment.na,
     this.workTransparency = FeedbackSentiment.na,
-    this.workDate,
     this.feedbackDate,
   });
 
@@ -199,7 +198,7 @@ class BizFeedback {
         workTimeCommitment = json['workTimeCommitment'] as FeedbackSentiment,
         workCommunication = json['workCommunication'] as FeedbackSentiment,
         workTransparency = json['workTransparency'] as FeedbackSentiment,
-        workDate = json['workDate'] as DateTime,
+        //workDate = json['workDate'] as DateTime,
         feedbackDate = json['feedbackDate'] as DateTime;
 
   Map<String, dynamic> toJson() => {
@@ -212,7 +211,7 @@ class BizFeedback {
         'workTimeCommitment': workTimeCommitment,
         'workCommunication': workCommunication,
         'workTransparency': workTransparency,
-        'workDate': workDate,
+        //'workDate': workDate,
         'feedbackDate': feedbackDate,
       };
 }

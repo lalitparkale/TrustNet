@@ -2,6 +2,7 @@ library globals;
 
 import 'dart:io';
 import 'dart:math';
+import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'model/profile_model.dart';
@@ -254,6 +255,11 @@ Future<File> get getFileSharedBizContacts async {
   return File('$path/sharedbizcontacts.json');
 }
 
+Future<File> get getFileFeedbacks async {
+  final path = await getLocalAppDocPath;
+  return File('$path/feedbacks.csv');
+}
+
 bool findUIDforProfile(String mobile) {
   for (var i = 0; i < gAllUsers.length; i++) {
     if (gAllUsers[i].mobile == mobile) {
@@ -277,6 +283,117 @@ void saveSharedContacts() {
 void saveSharedBizContacts() {
   //save user profile to db
   BusinessContact.saveSharedBizContactsToFile(gSharedBizContacts);
+}
+
+void saveAllFeedbackToFile() async {
+  //save all feedback to db
+  //BizFeedback.saveAllFeedbackToFile(gAllFeedbackMap);
+
+  final file = await getFileFeedbacks;
+
+  StringBuffer sb = StringBuffer();
+  Map<int, BizFeedback> f;
+
+  sb.write('userid');
+  sb.write(',');
+  sb.write('bizid');
+  sb.write(',');
+  sb.write('feedbackid');
+  sb.write(',');
+  sb.write('comments');
+  sb.write(',');
+  sb.write('worktype');
+  sb.write(',');
+  sb.write('communication');
+  sb.write(',');
+  sb.write('price');
+  sb.write(',');
+  sb.write('professionalism');
+  sb.write(',');
+  sb.write('quality');
+  sb.write(',');
+  sb.write('timecommitment');
+  sb.write(',');
+  sb.write('transparency');
+  sb.write(',');
+  sb.write('feedbackdate');
+  sb.write(',');
+  //newline
+  sb.write('\r\n');
+
+  //for (var i = 0; i < gAllFeedbackMap.length; i++) {
+  for (var keyUser in gAllFeedbackMap.keys) {
+    f = gAllFeedbackMap[keyUser]!;
+    String uid = keyUser.toString();
+    for (var keyBiz in f.keys) {
+      String bid = keyBiz.toString();
+      BizFeedback fb = f[keyBiz]!;
+      sb.write(uid);
+      sb.write(',');
+      sb.write(bid);
+      sb.write(',');
+      sb.write(fb.id);
+      sb.write(',');
+      sb.write('"${fb.comments}"');
+      sb.write(',');
+      sb.write('"${fb.workType}"');
+      sb.write(',');
+      sb.write(fb.workCommunication.index);
+      sb.write(',');
+      sb.write(fb.workPrice.index);
+      sb.write(',');
+      sb.write(fb.workProfessionalism.index);
+      sb.write(',');
+      sb.write(fb.workQuality.index);
+      sb.write(',');
+      sb.write(fb.workTimeCommitment.index);
+      sb.write(',');
+      sb.write(fb.workTransparency.index);
+      sb.write(',');
+      sb.write(fb.feedbackDate.toString());
+      sb.write(',');
+      //newline
+      sb.write('\r\n');
+    }
+  }
+
+  // Write the file
+  file.writeAsString(sb.toString());
+
+  return;
+}
+
+void loadAllFeedbackFromFile() async {
+  //load all feedback from db
+
+  final file = await getFileFeedbacks;
+
+  //File peopleFile = File('$directory/peeps.csv');
+  List<List<dynamic>> feedbacksData =
+      const CsvToListConverter().convert(file.readAsStringSync());
+  for (int i = 1; i < feedbacksData.length; i++) {
+    List<dynamic> fLine = feedbacksData[i];
+    int uid = fLine[0];
+    int bid = fLine[1];
+    BizFeedback fb = BizFeedback(
+      id: fLine[2],
+      comments: fLine[3],
+      workType: fLine[4],
+      workCommunication: FeedbackSentiment.values[fLine[5]],
+      workPrice: FeedbackSentiment.values[fLine[6]],
+      workProfessionalism: FeedbackSentiment.values[fLine[7]],
+      workQuality: FeedbackSentiment.values[fLine[8]],
+      workTimeCommitment: FeedbackSentiment.values[fLine[9]],
+      workTransparency: FeedbackSentiment.values[fLine[10]],
+      feedbackDate: DateTime.parse(fLine[11]),
+    );
+
+    if (gAllFeedbackMap.containsKey(uid)) {
+      gAllFeedbackMap[uid]![bid] = fb;
+    } else {
+      gAllFeedbackMap[uid] = {bid: fb};
+    }
+  }
 }
 
 //create function to read friends data from csv file
